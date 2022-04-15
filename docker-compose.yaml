@@ -1,0 +1,43 @@
+version: "3.4"
+services:
+  api:
+    environment:
+      DATABASE_HOST: ${DATABASE_HOST}
+      DATABASE_PORT: ${DATABASE_PORT}
+      DATABASE_USER: ${DATABASE_USER}
+      DATABASE_PASS: ${DATABASE_PASS}
+      DATABASE_NAME: ${DATABASE_NAME}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN}
+      STRIPE_API_KEY: ${JWT_STRIPE_API_KEY}
+    build:
+      context: ./api
+    depends_on:
+      - mysql
+    image: api
+    ports:
+      - "5000:5000"
+    restart: always
+  mysql:
+    environment:
+      MYSQL_DATABASE: ${DATABASE_NAME}
+      MYSQL_PASSWORD: ${DATABASE_PASS}
+      MYSQL_ROOT_PASSWORD: ${DATABASE_PASS}
+      MYSQL_USER: ${DATABASE_USER}
+    image: mysql
+    volumes:
+      - "./data:/var/lib/mysql"
+  www:
+    environment:
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+      NEXTAUTH_URL: ${NEXTAUTH_URL}
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
+    build:
+      context: ./www
+    command: start
+    depends_on:
+      - api
+    image: www
+    ports:
+      - "3000:3000"
+    restart: always

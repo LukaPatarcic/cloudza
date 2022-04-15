@@ -1,0 +1,64 @@
+{
+    "root": true,
+    "env": {
+        "node": true,
+        "es6": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:jest/recommended",
+        "plugin:prettier/recommended",
+        "plugin:import/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "project": "./tsconfig.json",
+        "tsconfigRootDir": "./"
+    },
+    "plugins": [
+        "@typescript-eslint",
+        "jest",
+        "prettier",
+        "import"
+    ],
+    "overrides": [
+        {
+            "files": ["*.spec.ts"],
+            "env": {
+                "jest/globals": true
+            }
+        }
+    ],
+    "rules": {
+        "import/order": [
+            "error",
+            {
+                "groups": ["builtin", "external", "internal", "type"],
+                "pathGroups": [
+                    {
+                        "pattern": "@nestjs/*",
+                        "group": "external",
+                        "position": "before"
+                    },
+                    {
+                        "pattern": "@feature/*",
+                        "group": "external",
+                        "position": "before"
+                    },
+                    {
+                        "pattern": "*",
+                        "group": "external",
+                        "position": "after"
+                    }
+                ],
+                "pathGroupsExcludedImportTypes": ["@nestjs"],
+                "newlines-between": "always",
+                "alphabetize": {
+                    "order": "asc",
+                    "caseInsensitive": true
+                }
+            }
+        ]
+    }
+}
