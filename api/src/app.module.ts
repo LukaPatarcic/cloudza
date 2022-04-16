@@ -2,24 +2,29 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+import { mailerConfig } from '@config/mailerConfig';
 import { stripeConfig } from '@config/stripe.config';
 import { typeOrmConfig } from '@config/typeorm.config';
 import { AuthModule } from '@feature/auth/auth.module';
 import { UserRepository } from '@feature/auth/user.repository';
+import { MailModule } from '@feature/mail/mail.module';
 import { TokenController } from '@feature/token/token.controller';
 import { TokenModule } from '@feature/token/token.module';
 import { TokenService } from '@feature/token/token.service';
+import { MailerModule } from '@nestjs-modules/mailer';
 
 import { CommandModule } from 'nestjs-command';
 import { StripeModule } from 'nestjs-stripe';
 
 @Module({
   imports: [
-    CommandModule,
-    TypeOrmModule.forRootAsync(typeOrmConfig),
     ConfigModule.forRoot(),
+    TypeOrmModule.forRootAsync(typeOrmConfig),
     StripeModule.forRootAsync(stripeConfig),
     TypeOrmModule.forFeature([UserRepository]),
+    CommandModule,
+    MailerModule,
+    MailModule,
     AuthModule,
     TokenModule,
   ],

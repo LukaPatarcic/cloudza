@@ -6,6 +6,7 @@ import { AuthCredentialsDto } from '@feature/auth/dto/auth-credentials.dto';
 import { JwtPayload } from '@feature/auth/interface/jwt-payload.interface';
 import { SiginResponse } from '@feature/auth/interface/sigin-response.interface';
 import { UserRepository } from '@feature/auth/user.repository';
+import { MailerService } from '@nestjs-modules/mailer';
 
 @Injectable()
 export class AuthService {
