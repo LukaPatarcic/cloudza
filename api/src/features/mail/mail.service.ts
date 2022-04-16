@@ -1,20 +1,69 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
 import { MailerService } from '@nestjs-modules/mailer';
 
+import { SentMessageInfo } from 'nodemailer';
+
 @Injectable()
 export class MailService {
-  constructor(private readonly mailerService: MailerService) {}
+    constructor(
+        private readonly mailerService: MailerService,
+        private readonly configService: ConfigService,
+    ) {
+        this.apiUrl = this.configService.get('API_HOSTNAME');
+        this.wwwUrl = this.configService.get('WWW_HOSTNAME');
+    }
 
-  async sendEmailTest() {
-    return this.mailerService.sendMail({
-      to: 'patarcic98@gmail.com',
-      subject: 'Testing Nest MailerModule ✔',
-      template: 'confirmation',
-      context: {
-        name: 'Luka',
-        url: 'https://google.com',
-      },
-    });
-  }
+    apiUrl: string;
+    wwwUrl: string;
+
+    sendVerificationEmail(
+        email: string,
+        name: string,
+        token: string,
+    ): Promise<SentMessageInfo> {
+        const url = `${this.apiUrl}/auth/verify/${token}`;
+        return this.sendEmail(
+            email,
+            'Verify Your Email Address',
+            'email-verification',
+            {
+                name,
+                url,
+            },
+        );
+    }
+
+    sendPasswordResetEmail(
+        email: string,
+        name: string,
+        token: string,
+    ): Promise<SentMessageInfo> {
+        const url = `${this.wwwUrl}/password-reset?token=${token}$email=${email}`;
+        return this.sendEmail(
+            email,
+            'Password Reset Request',
+            'forgotten-password',
+            {
+                name,
+                url,
+            },
+        );
+    }
+
+    private sendEmail(
+        email: string,
+        subject: string,
+        template: string,
+        context: object,
+    ): Promise<SentMessageInfo> {
+        const mailTo = this.configService.get('SMTP_TO');
+        return this.mailerService.sendMail({
+            to: mailTo ?? email,
+            subject,
+            template,
+            context,
+        }) as Promise<SentMessageInfo>;
+    }
 }

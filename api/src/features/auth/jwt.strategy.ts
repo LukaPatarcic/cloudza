@@ -4,15 +4,16 @@ import { PassportStrategy } from '@nestjs/passport';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { JwtPayload } from '@feature/auth/interface/jwt-payload.interface';
-import { User } from '@feature/auth/user.entity';
-import { UserRepository } from '@feature/auth/user.repository';
+import { AuthRepository } from '@feature/auth/repository/auth.repository';
+import { User } from '@feature/user/user.entity';
+
 import { Strategy, ExtractJwt } from 'passport-jwt';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
-    @InjectRepository(UserRepository)
-    private readonly userRepository: UserRepository,
+    @InjectRepository(AuthRepository)
+    private readonly userRepository: AuthRepository,
     private readonly configService: ConfigService,
   ) {
     super({

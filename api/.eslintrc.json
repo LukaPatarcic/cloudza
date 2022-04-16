@@ -31,6 +31,8 @@
         }
     ],
     "rules": {
+        "import/no-unresolved": "off",
+        "prettier/prettier": "error",
         "import/order": [
             "error",
             {

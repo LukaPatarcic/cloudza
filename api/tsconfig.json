@@ -8,6 +8,15 @@
       "@config/*": [
         "core/config/*"
       ],
+      "@decorator/*": [
+        "core/decorator/*"
+      ],
+      "@helper/*": [
+        "core/helper/*"
+      ],
+      "@entity/*": [
+        "core/entity/*"
+      ]
     },
     "module": "commonjs",
     "declaration": true,
