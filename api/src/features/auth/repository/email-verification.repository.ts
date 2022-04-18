@@ -1,13 +1,10 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { InjectRepository } from '@nestjs/typeorm';
 
 import { EmailVerification } from '@feature/auth/entity/email-verification.entity';
 import { User } from '@feature/user/user.entity';
 import { UserRepository } from '@feature/user/user.repository';
 import { CommonHelper } from '@helper/common.helper';
 
-import { randomBytes } from 'crypto';
 import { EntityRepository, Repository } from 'typeorm';
 
 @EntityRepository(EmailVerification)

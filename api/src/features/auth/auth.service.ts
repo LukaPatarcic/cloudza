@@ -14,7 +14,7 @@ import { ResetPasswordDto } from '@feature/auth/dto/reset-password.dto';
 import { SignInDto } from '@feature/auth/dto/sign-in.dto';
 import { SignUpDto } from '@feature/auth/dto/sign-up.dto';
 import { JwtPayload } from '@feature/auth/interface/jwt-payload.interface';
-import { SiginResponse } from '@feature/auth/interface/sigin-response.interface';
+import { SigInResponse } from '@feature/auth/interface/sigin-response.interface';
 import { AuthRepository } from '@feature/auth/repository/auth.repository';
 import { EmailVerificationRepository } from '@feature/auth/repository/email-verification.repository';
 import { ForgottenPasswordRepository } from '@feature/auth/repository/forgotten-password.repository';
@@ -44,7 +44,7 @@ export class AuthService {
         await this.sendEmailVerification(user.email);
     }
 
-    async signIn(signInDto: SignInDto): Promise<SiginResponse> {
+    async signIn(signInDto: SignInDto): Promise<SigInResponse> {
         const user = await this.authRepository.validateUserPassword(signInDto);
         if (!user) {
             throw new UnauthorizedException('Invalid credentials');

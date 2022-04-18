@@ -2,9 +2,9 @@
 // success: false => errorMessage, error
 
 export interface IResponse {
-  success: boolean;
-  message: string;
-  errorMessage: string;
-  data: unknown;
-  error: string;
+    success: boolean;
+    message: string;
+    errorMessage: string;
+    data: unknown;
+    error: string;
 }

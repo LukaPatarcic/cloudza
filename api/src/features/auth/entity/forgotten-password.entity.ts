@@ -1,17 +1,13 @@
+import { TimestampEntity } from '@entity/timestamp.entity';
 import { User } from '@feature/user/user.entity';
 
 import {
-    BaseEntity,
     Column,
-    CreateDateColumn,
     Entity,
     JoinColumn,
     OneToOne,
     PrimaryGeneratedColumn,
-    UpdateDateColumn,
 } from 'typeorm';
-
-import { TimestampEntity } from '../../../core/entity/timestamp.entity';
 
 @Entity()
 export class ForgottenPassword extends TimestampEntity {

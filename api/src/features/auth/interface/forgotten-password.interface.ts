@@ -1,6 +1,6 @@
 export interface EmailVerification {
-  email: string;
-  token: string;
-  createdAt: Date;
-  updatedAt: Date;
+    email: string;
+    token: string;
+    createdAt: Date;
+    updatedAt: Date;
 }

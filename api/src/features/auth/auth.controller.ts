@@ -11,7 +11,7 @@ import { AuthService } from '@feature/auth/auth.service';
 import { ResetPasswordDto } from '@feature/auth/dto/reset-password.dto';
 import { SignInDto } from '@feature/auth/dto/sign-in.dto';
 import { SignUpDto } from '@feature/auth/dto/sign-up.dto';
-import { SiginResponse } from '@feature/auth/interface/sigin-response.interface';
+import { SigInResponse } from '@feature/auth/interface/sigin-response.interface';
 import { MailService } from '@feature/mail/mail.service';
 
 import { ResponseError, ResponseSuccess } from '../../core/dto/response.dto';
@@ -19,10 +19,7 @@ import { IResponse } from '../../core/interface/response.interface';
 
 @Controller('auth')
 export class AuthController {
-    constructor(
-        private readonly authService: AuthService,
-        private readonly mailService: MailService,
-    ) {}
+    constructor(private readonly authService: AuthService) {}
 
     @Post('/signup')
     async signUp(@Body(ValidationPipe) signUpDto: SignUpDto) {
@@ -32,7 +29,7 @@ export class AuthController {
     @Post('/signin')
     async signIn(
         @Body(ValidationPipe) signInDto: SignInDto,
-    ): Promise<SiginResponse> {
+    ): Promise<SigInResponse> {
         return this.authService.signIn(signInDto);
     }
 

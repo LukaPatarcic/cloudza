@@ -6,24 +6,24 @@ import { AppModule } from './app.module';
 const PORT = 5000;
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  app.enableCors({
-    allowedHeaders: '*',
-    origin: '*',
-    methods: ['POST', 'GET'],
-  });
+    const app = await NestFactory.create(AppModule);
+    app.enableCors({
+        allowedHeaders: '*',
+        origin: '*',
+        methods: ['POST', 'GET'],
+    });
 
-  const config = new DocumentBuilder()
-    .setTitle('Cloudza')
-    .setVersion('1.0')
-    .addTag('cloudza')
-    .build();
+    const config = new DocumentBuilder()
+        .setTitle('Cloudza')
+        .setVersion('1.0')
+        .addTag('cloudza')
+        .build();
 
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
-  app.enableShutdownHooks();
+    const document = SwaggerModule.createDocument(app, config);
+    SwaggerModule.setup('api', app, document);
+    app.enableShutdownHooks();
 
-  await app.listen(process.env.PORT || PORT);
+    await app.listen(process.env.PORT || PORT);
 }
 
 bootstrap().then(() => console.log(''));

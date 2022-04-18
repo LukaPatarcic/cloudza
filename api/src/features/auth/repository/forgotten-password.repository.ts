@@ -53,7 +53,7 @@ export class ForgottenPasswordRepository extends Repository<ForgottenPassword> {
         const token = CommonHelper.generateToken();
         const existsInDb = await this.findOne({ token });
         if (existsInDb) {
-            this.generatePasswordToken();
+            await this.generatePasswordToken();
         }
 
         return token;

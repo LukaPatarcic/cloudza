@@ -1,3 +1,4 @@
+import { TimestampEntity } from '@entity/timestamp.entity';
 import { User } from '@feature/user/user.entity';
 
 import {
@@ -7,8 +8,6 @@ import {
     OneToOne,
     PrimaryGeneratedColumn,
 } from 'typeorm';
-
-import { TimestampEntity } from '../../../core/entity/timestamp.entity';
 
 @Entity()
 export class EmailVerification extends TimestampEntity {
