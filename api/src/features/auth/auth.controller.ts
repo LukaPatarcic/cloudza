@@ -2,10 +2,14 @@ import {
     Body,
     Controller,
     Get,
+    HttpException,
+    HttpStatus,
     Param,
     Post,
+    Redirect,
     ValidationPipe,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
 import { AuthService } from '@feature/auth/auth.service';
 import { ResetPasswordDto } from '@feature/auth/dto/reset-password.dto';
@@ -19,7 +23,13 @@ import { IResponse } from '../../core/interface/response.interface';
 
 @Controller('auth')
 export class AuthController {
-    constructor(private readonly authService: AuthService) {}
+    constructor(
+        private readonly authService: AuthService,
+        private readonly configService: ConfigService,
+    ) {
+        this.wwwUrl = this.configService.get('WWW_HOSTNAME');
+    }
+    wwwUrl: string;
 
     @Post('/signup')
     async signUp(@Body(ValidationPipe) signUpDto: SignUpDto) {
@@ -34,14 +44,13 @@ export class AuthController {
     }
 
     @Get('/verify/:token')
-    public async verifyEmail(@Param() params): Promise<IResponse> {
+    @Redirect()
+    public async verifyEmail(@Param() params) {
         try {
-            const isEmailVerified = await this.authService.verifyEmail(
-                params.token,
-            );
-            return new ResponseSuccess('LOGIN.EMAIL_VERIFIED', isEmailVerified);
+            await this.authService.verifyEmail(params.token);
+            return { url: `${this.wwwUrl}/login?success=true` };
         } catch (error) {
-            return new ResponseError('LOGIN.ERROR', error);
+            throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -54,7 +63,6 @@ export class AuthController {
             if (isEmailSent) {
                 return new ResponseSuccess('LOGIN.EMAIL_RESENT', null);
             }
-
             return new ResponseError('REGISTRATION.ERROR.MAIL_NOT_SENT');
         } catch (error) {
             return new ResponseError('LOGIN.ERROR.SEND_EMAIL', error);
@@ -69,25 +77,23 @@ export class AuthController {
             );
             if (isEmailSent) {
                 return new ResponseSuccess('LOGIN.EMAIL_RESENT', null);
-            } else {
-                return new ResponseError('REGISTRATION.ERROR.MAIL_NOT_SENT');
             }
+
+            throw new HttpException(
+                'REGISTRATION.ERROR.MAIL_NOT_SENT',
+                HttpStatus.INTERNAL_SERVER_ERROR,
+            );
         } catch (error) {
-            return new ResponseError('LOGIN.ERROR.SEND_EMAIL', error);
+            throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @Post('/reset-password')
-    public async setNewPassword(
-        @Body() resetPassword: ResetPasswordDto,
-    ): Promise<IResponse> {
+    public async setNewPassword(@Body() resetPassword: ResetPasswordDto) {
         try {
             await this.authService.setNewPassword(resetPassword);
         } catch (error) {
-            return new ResponseError(
-                'RESET_PASSWORD.CHANGE_PASSWORD_ERROR',
-                error,
-            );
+            throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

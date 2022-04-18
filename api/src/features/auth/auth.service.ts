@@ -1,10 +1,6 @@
 import {
     BadRequestException,
-    ConflictException,
-    HttpException,
-    HttpStatus,
     Injectable,
-    InternalServerErrorException,
     UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -19,7 +15,6 @@ import { AuthRepository } from '@feature/auth/repository/auth.repository';
 import { EmailVerificationRepository } from '@feature/auth/repository/email-verification.repository';
 import { ForgottenPasswordRepository } from '@feature/auth/repository/forgotten-password.repository';
 import { MailService } from '@feature/mail/mail.service';
-import { User } from '@feature/user/user.entity';
 import { UserRepository } from '@feature/user/user.repository';
 
 import { ResponseError, ResponseSuccess } from '../../core/dto/response.dto';
