@@ -31,8 +31,6 @@ import { TrimMiddleware } from './core/middleware/trim.middleware';
         PaymentModule,
         TokenModule,
     ],
-    providers: [TokenService],
-    controllers: [TokenController],
 })
 export class AppModule implements NestModule {
     configure(consumer: MiddlewareConsumer) {

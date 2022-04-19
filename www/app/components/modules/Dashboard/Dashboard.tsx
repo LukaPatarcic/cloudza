@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { FC, ReactNode } from 'react';
 
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -10,10 +11,8 @@ import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import MuiDrawer from '@mui/material/Drawer';
-import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
-import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -21,12 +20,15 @@ import Typography from '@mui/material/Typography';
 import Copyright from '@module/Copyright/Copyright';
 
 import { mainListItems, secondaryListItems } from './listItems';
-import Orders from './Orders';
 
 const drawerWidth = 240;
 
 interface AppBarProps extends MuiAppBarProps {
     open?: boolean;
+}
+
+interface Props {
+    children: ReactNode;
 }
 
 const AppBar = styled(MuiAppBar, {
@@ -73,7 +75,7 @@ const Drawer = styled(MuiDrawer, {
     },
 }));
 
-function DashboardContent() {
+const DashboardContent: FC<Props> = ({ children }) => {
     const [open, setOpen] = React.useState(true);
     const toggleDrawer = () => {
         setOpen(!open);
@@ -150,25 +152,12 @@ function DashboardContent() {
             >
                 <Toolbar />
                 <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-                    <Grid container spacing={3}>
-                        {/* Recent Orders */}
-                        <Grid item xs={12}>
-                            <Paper
-                                sx={{
-                                    p: 2,
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                }}
-                            >
-                                <Orders />
-                            </Paper>
-                        </Grid>
-                    </Grid>
+                    {children}
                     <Copyright sx={{ pt: 4 }} />
                 </Container>
             </Box>
         </Box>
     );
-}
+};
 
 export default DashboardContent;

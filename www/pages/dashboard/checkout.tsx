@@ -4,9 +4,9 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 
 import DashboardLayout from '@layout/DashboardLayout';
-import Orders from '@module/Dashboard/Orders';
+import StripeCheckout from '@module/Stripe/StripeCheckout';
 
-const Dashboard = () => {
+const Checkout = () => {
     return (
         <DashboardLayout>
             <Grid container spacing={3}>
@@ -18,7 +18,7 @@ const Dashboard = () => {
                             flexDirection: 'column',
                         }}
                     >
-                        <Orders />
+                        <StripeCheckout />
                     </Paper>
                 </Grid>
             </Grid>
@@ -26,4 +26,4 @@ const Dashboard = () => {
     );
 };
 
-export default Dashboard;
+export default Checkout;

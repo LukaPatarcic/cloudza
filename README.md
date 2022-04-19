@@ -72,6 +72,7 @@ Edit your .env file with correct values
 NEXT_PUBLIC_API_URL=
 NEXTAUTH_URL=
 NEXTAUTH_SECRET=
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
 ```
 
 Note: Make sure JWT_SECRET and NEXTAUTH_SECRET are the same value
