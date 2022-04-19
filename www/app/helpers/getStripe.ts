@@ -3,7 +3,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import type { Stripe } from '@stripe/stripe-js';
 
 let stripePromise: Promise<Stripe | null>;
-export const getStripe = () => {
+const getStripe = () => {
     if (!stripePromise) {
         if (!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) {
             throw new Error('Missing Stripe Publishable Key');
@@ -14,3 +14,5 @@ export const getStripe = () => {
     }
     return stripePromise;
 };
+
+export default getStripe;

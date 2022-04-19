@@ -18,7 +18,6 @@ const options: NextAuthOptions = {
             return session;
         },
         jwt: async ({ token, user }) => {
-            // console.log(token, user);
             if (user) {
                 token = { ...user };
             }
