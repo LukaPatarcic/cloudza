@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 
 import Button from '@mui/material/Button';
 import {
@@ -9,32 +9,7 @@ import {
     useStripe,
 } from '@stripe/react-stripe-js';
 
-import useResponsiveFontSize from '@hook/useResponsiveFontSize';
-
-const useOptions = () => {
-    const fontSize = useResponsiveFontSize();
-    const options = useMemo(
-        () => ({
-            style: {
-                base: {
-                    fontSize,
-                    color: '#424770',
-                    letterSpacing: '0.025em',
-                    fontFamily: 'Source Code Pro, monospace',
-                    '::placeholder': {
-                        color: '#aab7c4',
-                    },
-                },
-                invalid: {
-                    color: '#9e2146',
-                },
-            },
-        }),
-        [fontSize]
-    );
-
-    return options;
-};
+import useOptions from '@module/Stripe/useOptions';
 
 const StripeCheckoutForm = () => {
     const [name, setName] = useState('');

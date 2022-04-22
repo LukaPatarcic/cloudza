@@ -1,11 +1,20 @@
 import * as React from 'react';
+import { FC, ReactNode } from 'react';
 
-import Link from '@mui/material/Link';
+import Link from 'next/link';
+
+import { SxProps } from '@mui/material';
 import Typography from '@mui/material/Typography';
 
 import { APP_NAME } from '@constant/index';
+import { HOME_ROUTE } from '@constant/routes';
 
-const Copyright = (props: any) => {
+interface Props {
+    children?: ReactNode;
+    sx?: SxProps;
+}
+
+const Copyright: FC<Props> = ({ ...props }) => {
     return (
         <Typography
             variant="body2"
@@ -14,10 +23,7 @@ const Copyright = (props: any) => {
             {...props}
         >
             {'Copyright © '}
-            <Link color="inherit" href="#">
-                {APP_NAME}
-            </Link>{' '}
-            {new Date().getFullYear()}
+            <Link href={HOME_ROUTE}>{APP_NAME}</Link> {new Date().getFullYear()}
             {'.'}
         </Typography>
     );

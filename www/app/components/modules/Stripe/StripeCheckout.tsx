@@ -1,5 +1,3 @@
-import { useMemo } from 'react';
-
 import { Elements } from '@stripe/react-stripe-js';
 
 import getStripe from '@helper/getStripe';

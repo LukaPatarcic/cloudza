@@ -1,7 +1,8 @@
 import type { AppProps } from 'next/app';
 
+import { CacheProvider, EmotionCache } from '@emotion/react';
 import CssBaseline from '@mui/material/CssBaseline';
-import { ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/styles';
 import { SessionProvider } from 'next-auth/react';
 import NextNProgress from 'nextjs-progressbar';
 import '@style/app.scss';
@@ -9,12 +10,15 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 
 import { APP_NAME } from '@constant/index';
 import createEmotionCache from '@helper/createEmotionCache';
-import theme from '@helper/theme';
+import theme from '@themes/theme';
 
-import { CacheProvider, EmotionCache } from '@emotion/react';
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
 
 interface MyAppProps extends AppProps {
-    emotionCache: EmotionCache;
+    emotionCache?: EmotionCache;
 }
 
 const queryClient = new QueryClient();
@@ -33,7 +37,7 @@ function MyApp({
                         <title>{APP_NAME}</title>
                         <NextNProgress
                             nonce={APP_NAME}
-                            color="#123123"
+                            color={theme.palette.primary.main}
                             showOnShallow={false}
                             startPosition={0.4}
                             stopDelayMs={200}
