@@ -7,7 +7,7 @@ import Paper from '@mui/material/Paper';
 import { getToken } from 'next-auth/jwt';
 
 import { getPaymentIntentToken } from '@api/payment';
-import DashboardLayout from '@layout/DashboardLayout';
+import DashboardLayout from '@layout/DashboardLayout/DashboardLayout';
 import StripeCheckout from '@module/Stripe/StripeCheckout';
 
 const Checkout = () => {

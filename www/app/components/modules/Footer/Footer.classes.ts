@@ -2,38 +2,22 @@ import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        padding: theme.spacing(3, 0),
-        [theme.breakpoints.up('md')]: {
-            padding: theme.spacing(6, 0),
-        },
-        background: theme.palette.background.default,
+        borderTop: `1px solid ${theme.palette.divider}`,
     },
-    footerContainer: {
-        width: '100%',
-        margin: '0 auto',
-        padding: theme.spacing(0, 2),
-    },
-    logoContainerItem: {
-        paddingTop: 0,
-    },
-    logoContainer: {
-        width: 120,
-        height: 32,
-    },
-    socialIcon: {
-        padding: 0,
-        marginRight: theme.spacing(1),
-        color: 'rgba(255,255,255,.6)',
-        '&:hover': {
-            background: 'transparent',
-        },
-        '&:last-child': {
-            marginRight: 0,
+    layout: {
+        width: 'auto',
+        marginLeft: theme.spacing(3),
+        marginRight: theme.spacing(3),
+        marginBottom: theme.spacing(3),
+        [theme.breakpoints.up(1200 + parseInt(theme.spacing(3)) * 2)]: {
+            width: 1200,
+            marginLeft: 'auto',
+            marginRight: 'auto',
         },
     },
-    icon: {
-        fontSize: 24,
+    footer: {
+        marginTop: theme.spacing(8),
+        padding: `${theme.spacing(6)} 0px`,
     },
 }));
-
 export default useStyles;

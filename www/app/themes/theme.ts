@@ -1,24 +1,27 @@
-import { createTheme, responsiveFontSizes } from '@mui/material';
-import { Theme } from '@mui/material/styles';
+import { createTheme, responsiveFontSizes, Theme } from '@mui/material';
 
 import palette from './palette';
 import typography from './typography';
 
 declare module '@mui/styles' {
-
-    interface DefaultTheme extends Theme {
-        // empty
-        layout: { contentWidth: number }
+    export interface DefaultTheme extends Theme {
+        layout: { contentWidth: number };
+        alternate: { main: string; dark: string };
+        cardShadow: string;
     }
 }
 
 declare module '@mui/material/styles' {
-    interface Theme {
-        layout: { contentWidth: number }
+    export interface Theme {
+        layout: { contentWidth: number };
+        alternate: { main: string; dark: string };
+        cardShadow: string;
     }
-    // allow configuration using `createTheme`
-    interface ThemeOptions {
-        layout: { contentWidth: number }
+
+    export interface ThemeOptions {
+        layout: { contentWidth: number };
+        alternate: { main: string; dark: string };
+        cardShadow: string;
     }
 }
 const theme = responsiveFontSizes(
@@ -28,6 +31,11 @@ const theme = responsiveFontSizes(
         layout: {
             contentWidth: 1140,
         },
+        alternate: {
+            main: 'rgb(247, 249, 250)',
+            dark: '#e8eaf6',
+        },
+        cardShadow: 'rgba(23, 70, 161, .11)',
         zIndex: {
             appBar: 1200,
             drawer: 1100,

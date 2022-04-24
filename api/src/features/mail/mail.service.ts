@@ -40,7 +40,7 @@ export class MailService {
         name: string,
         token: string,
     ): Promise<SentMessageInfo> {
-        const url = `${this.wwwUrl}/password-reset?token=${token}`;
+        const url = `${this.wwwUrl}/reset-password?token=${token}`;
         return this.sendEmail(
             email,
             'Password Reset Request',

@@ -17,7 +17,7 @@ import { styled } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
-import Copyright from '@module/Copyright/Copyright';
+import Copyright from '@module/Footer/Copyright/Copyright';
 
 import { mainListItems, secondaryListItems } from './listItems';
 

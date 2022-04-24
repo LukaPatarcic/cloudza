@@ -1,7 +1,10 @@
+import { useEffect } from 'react';
+
 import type { AppProps } from 'next/app';
 
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import CssBaseline from '@mui/material/CssBaseline';
+import { StyledEngineProvider } from '@mui/material/styles';
 import { ThemeProvider } from '@mui/styles';
 import { SessionProvider } from 'next-auth/react';
 import NextNProgress from 'nextjs-progressbar';
@@ -28,31 +31,44 @@ function MyApp({
     emotionCache = clientSideEmotionCache,
     pageProps,
 }: MyAppProps) {
+    useEffect(() => {
+        const jssStyles = document.querySelector('#jss-server-side');
+        if (!jssStyles) return;
+        const jssStylesParentElement = jssStyles.parentElement;
+        if (!jssStylesParentElement) return;
+        jssStylesParentElement.removeChild(jssStyles);
+    }, []);
+
     return (
-        <CacheProvider value={emotionCache}>
-            <SessionProvider session={pageProps.session} refetchInterval={0}>
-                <QueryClientProvider client={queryClient}>
-                    <ThemeProvider theme={theme}>
-                        <CssBaseline />
-                        <title>{APP_NAME}</title>
-                        <NextNProgress
-                            nonce={APP_NAME}
-                            color={theme.palette.primary.main}
-                            showOnShallow={false}
-                            startPosition={0.4}
-                            stopDelayMs={200}
-                            height={3}
-                            options={{
-                                trickleRate: 0.05,
-                                trickleSpeed: 500,
-                                showSpinner: false,
-                            }}
-                        />
-                        <Component {...pageProps} />
-                    </ThemeProvider>
-                </QueryClientProvider>
-            </SessionProvider>
-        </CacheProvider>
+        <StyledEngineProvider injectFirst>
+            <CacheProvider value={emotionCache}>
+                <SessionProvider
+                    session={pageProps.session}
+                    refetchInterval={0}
+                >
+                    <QueryClientProvider client={queryClient}>
+                        <ThemeProvider theme={theme}>
+                            <CssBaseline />
+                            <title>{APP_NAME}</title>
+                            <NextNProgress
+                                nonce={APP_NAME}
+                                color={theme.palette.primary.main}
+                                showOnShallow={false}
+                                startPosition={0.4}
+                                stopDelayMs={200}
+                                height={3}
+                                options={{
+                                    trickleRate: 0.05,
+                                    trickleSpeed: 500,
+                                    showSpinner: false,
+                                }}
+                            />
+                            <Component {...pageProps} />
+                        </ThemeProvider>
+                    </QueryClientProvider>
+                </SessionProvider>
+            </CacheProvider>
+        </StyledEngineProvider>
     );
 }
 

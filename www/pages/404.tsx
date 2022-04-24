@@ -15,7 +15,11 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         justifyContent: 'center',
         minHeight: `calc(100vh - ${
-            (theme.mixins.toolbar['@media (min-width:600px)'] as any).minHeight
+            (
+                theme.mixins.toolbar['@media (min-width:600px)'] as {
+                    minHeight: string;
+                }
+            ).minHeight
         }px)`,
         maxWidth: 500,
         margin: `0 auto`,

@@ -3,7 +3,7 @@ import * as React from 'react';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 
-import DashboardLayout from '@layout/DashboardLayout';
+import DashboardLayout from '@layout/DashboardLayout/DashboardLayout';
 import Orders from '@module/Dashboard/Orders';
 
 const Dashboard = () => {

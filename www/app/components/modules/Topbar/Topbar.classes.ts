@@ -1,7 +1,9 @@
 import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles((theme) => ({
-    root: {},
+    root: {
+        boxShadow: `0 2px 10px 0 ${theme.cardShadow}`,
+    },
     flexGrow: {
         flexGrow: 1,
     },

@@ -13,22 +13,18 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { useForm } from 'react-hook-form';
 import { useMutation } from 'react-query';
-import * as yup from 'yup';
 
 import { forgotPassword } from '@api/auth';
+import Section from '@element/Section/Section';
 import SubmitButton from '@element/SubmitButton/SubmitButton';
-import Copyright from '@module/Copyright/Copyright';
+import DefaultLayout from '@layout/DefaultLayout/DefaultLayout';
+import ForgotPasswordPage from '@template/ForgotPasswordPage/ForgotPasswordPage';
 import { IServerError } from '@type/api';
+import { forgotPasswordSchema } from '@validation/forgotPasswordSchema';
 
 interface IForgotPasswordFormInputs {
     email: string;
 }
-
-const schema = yup
-    .object({
-        email: yup.string().email().required(),
-    })
-    .required();
 
 const ForgotPassword: NextPage = () => {
     const mutation = useMutation<unknown, IServerError, string>(
@@ -41,7 +37,7 @@ const ForgotPassword: NextPage = () => {
         handleSubmit,
         formState: { errors },
     } = useForm<IForgotPasswordFormInputs>({
-        resolver: yupResolver(schema),
+        resolver: yupResolver(forgotPasswordSchema),
     });
 
     const onSubmit = (data: IForgotPasswordFormInputs) => {
@@ -49,55 +45,16 @@ const ForgotPassword: NextPage = () => {
     };
 
     return (
-        <Container component="main" maxWidth="xs">
-            <Box
-                sx={{
-                    marginTop: 8,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                }}
-            >
-                <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                    <LockOutlinedIcon />
-                </Avatar>
-                <Typography component="h1" variant="h5">
-                    Forgot Password
-                </Typography>
-                <Box
-                    component="form"
-                    noValidate
-                    onSubmit={handleSubmit(onSubmit)}
-                    sx={{ mt: 3 }}
-                >
-                    <Grid container spacing={2}>
-                        <Grid item xs={12}>
-                            <TextField
-                                required
-                                fullWidth
-                                id="email"
-                                label="Email Address"
-                                autoComplete="email"
-                                helperText={errors.email?.message}
-                                error={!!errors.email}
-                                {...register('email')}
-                            />
-                        </Grid>
-                        {isSuccess && (
-                            <Grid item xs={12}>
-                                <Alert severity="success">
-                                    We have sent you a confirmation email
-                                </Alert>
-                            </Grid>
-                        )}
-                    </Grid>
-                    <SubmitButton isLoading={isLoading}>
-                        Send Email
-                    </SubmitButton>
-                </Box>
-            </Box>
-            <Copyright sx={{ mt: 5 }} />
-        </Container>
+        <DefaultLayout>
+            <ForgotPasswordPage
+                isLoading={isLoading}
+                isSuccess={isSuccess}
+                errors={errors}
+                register={register}
+                handleSubmit={handleSubmit}
+                onSubmit={onSubmit}
+            />
+        </DefaultLayout>
     );
 };
 
