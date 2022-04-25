@@ -6,11 +6,10 @@ import Stripe from 'stripe';
 @Injectable()
 export class PaymentService {
     public constructor(@InjectStripe() private readonly stripeClient: Stripe) {}
-    public async getSecret() {
-        return this.stripeClient.paymentIntents.create({
-            amount: 0,
-            setup_future_usage: 'off_session',
-            currency: 'eur',
+
+    public async getSecret(stripeCustomerId: string) {
+        return this.stripeClient.setupIntents.create({
+            customer: stripeCustomerId,
         });
     }
 }

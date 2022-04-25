@@ -42,6 +42,13 @@ export class User extends TimestampEntity {
     @Exclude()
     salt: string;
 
+    @Column({
+        nullable: true,
+        unique: true,
+    })
+    @Exclude()
+    stripeCustomerId: string;
+
     @Column({ default: false, type: 'boolean' })
     @Exclude()
     isEmailVerified: boolean;

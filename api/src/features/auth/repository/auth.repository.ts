@@ -1,12 +1,13 @@
 import {
     ConflictException,
+    HttpException,
+    HttpStatus,
     InternalServerErrorException,
 } from '@nestjs/common';
 
 import { SignInDto } from '@feature/auth/dto/sign-in.dto';
 import { SignUpDto } from '@feature/auth/dto/sign-up.dto';
-import { User } from '@feature/user/user.entity';
-import { UserRepository } from '@feature/user/user.repository';
+import { User } from '@feature/auth/entity/user.entity';
 
 import * as bcrypt from 'bcrypt';
 import { EntityRepository, Repository } from 'typeorm';
@@ -39,9 +40,19 @@ export class AuthRepository extends Repository<User> {
         }
     }
 
+    async findByEmail(email: string) {
+        const user = await this.findOne({ email });
+        if (!user)
+            throw new HttpException(
+                'LOGIN.USER_NOT_FOUND',
+                HttpStatus.NOT_FOUND,
+            );
+
+        return user;
+    }
+
     async setPassword(email: string, newPassword: string): Promise<boolean> {
-        const userRepository = this.manager.getCustomRepository(UserRepository);
-        const user = await userRepository.findByEmail(email);
+        const user = await this.findByEmail(email);
         const { hashedPassword, salt } = await AuthRepository.generatePassword(
             newPassword,
         );

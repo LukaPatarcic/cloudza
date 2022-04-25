@@ -84,7 +84,7 @@ export class AuthController {
                 HttpStatus.INTERNAL_SERVER_ERROR,
             );
         } catch (error) {
-            throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseSuccess('LOGIN.EMAIL_RESENT', null);
         }
     }
 

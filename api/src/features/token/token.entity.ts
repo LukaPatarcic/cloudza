@@ -1,5 +1,5 @@
 import { TimestampEntity } from '@entity/timestamp.entity';
-import { User } from '@feature/user/user.entity';
+import { User } from '@feature/auth/entity/user.entity';
 
 import {
     Column,

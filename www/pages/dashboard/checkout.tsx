@@ -10,7 +10,8 @@ import { getPaymentIntentToken } from '@api/payment';
 import DashboardLayout from '@layout/DashboardLayout/DashboardLayout';
 import StripeCheckout from '@module/Stripe/StripeCheckout';
 
-const Checkout = () => {
+const Checkout = ({ paymentIntentToken }) => {
+    console.log(paymentIntentToken);
     return (
         <DashboardLayout>
             <Grid container spacing={3}>
@@ -33,7 +34,6 @@ const Checkout = () => {
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const token = await getToken(ctx);
     const accessToken = (token?.accessToken as string) ?? '';
-    console.log(token);
     const paymentIntentToken = await getPaymentIntentToken(accessToken);
     return {
         props: { paymentIntentToken },

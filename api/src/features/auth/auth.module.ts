@@ -10,7 +10,6 @@ import { JwtStrategy } from '@feature/auth/jwt.strategy';
 import { AuthRepository } from '@feature/auth/repository/auth.repository';
 import { EmailVerificationRepository } from '@feature/auth/repository/email-verification.repository';
 import { ForgottenPasswordRepository } from '@feature/auth/repository/forgotten-password.repository';
-import { UserRepository } from '@feature/user/user.repository';
 
 @Module({
     imports: [
@@ -27,7 +26,6 @@ import { UserRepository } from '@feature/user/user.repository';
         }),
         TypeOrmModule.forFeature([
             AuthRepository,
-            UserRepository,
             EmailVerificationRepository,
             ForgottenPasswordRepository,
         ]),

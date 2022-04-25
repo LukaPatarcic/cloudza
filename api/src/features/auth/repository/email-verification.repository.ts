@@ -1,8 +1,8 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
 
 import { EmailVerification } from '@feature/auth/entity/email-verification.entity';
-import { User } from '@feature/user/user.entity';
-import { UserRepository } from '@feature/user/user.repository';
+import { User } from '@feature/auth/entity/user.entity';
+import { AuthRepository } from '@feature/auth/repository/auth.repository';
 import { CommonHelper } from '@helper/common.helper';
 
 import { EntityRepository, Repository } from 'typeorm';
@@ -23,8 +23,8 @@ export class EmailVerificationRepository extends Repository<EmailVerification> {
     }
 
     async createEmailToken(email: string): Promise<User> {
-        const userRepository = this.manager.getCustomRepository(UserRepository);
-        const user = await userRepository.findByEmail(email);
+        const authRepository = this.manager.getCustomRepository(AuthRepository);
+        const user = await authRepository.findByEmail(email);
         const emailVerification = await this.findOne({ user });
         if (
             CommonHelper.timeIsLessThan15Minutes(

@@ -1,5 +1,5 @@
 import { TimestampEntity } from '@entity/timestamp.entity';
-import { User } from '@feature/user/user.entity';
+import { User } from '@feature/auth/entity/user.entity';
 
 import {
     Column,
@@ -20,7 +20,9 @@ export class EmailVerification extends TimestampEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({
+        unique: true,
+    })
     token: string;
 
     @OneToOne(() => User, (user) => user.emailVerification, { eager: true })

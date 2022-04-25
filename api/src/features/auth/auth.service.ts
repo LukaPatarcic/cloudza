@@ -15,7 +15,9 @@ import { AuthRepository } from '@feature/auth/repository/auth.repository';
 import { EmailVerificationRepository } from '@feature/auth/repository/email-verification.repository';
 import { ForgottenPasswordRepository } from '@feature/auth/repository/forgotten-password.repository';
 import { MailService } from '@feature/mail/mail.service';
-import { UserRepository } from '@feature/user/user.repository';
+
+import { InjectStripe } from 'nestjs-stripe';
+import Stripe from 'stripe';
 
 import { ResponseError, ResponseSuccess } from '../../core/dto/response.dto';
 
@@ -24,14 +26,13 @@ export class AuthService {
     constructor(
         @InjectRepository(AuthRepository)
         private readonly authRepository: AuthRepository,
-        @InjectRepository(UserRepository)
-        private readonly userRepository: UserRepository,
         @InjectRepository(EmailVerificationRepository)
         private readonly emailVerificationRepository: EmailVerificationRepository,
         @InjectRepository(ForgottenPasswordRepository)
         private readonly forgottenPasswordRepository: ForgottenPasswordRepository,
         private readonly jwtService: JwtService,
         private readonly mailService: MailService,
+        @InjectStripe() private readonly stripeClient: Stripe,
     ) {}
 
     async signUp(signUpDto: SignUpDto): Promise<void> {
@@ -65,6 +66,8 @@ export class AuthService {
 
         await user.save();
         await emailVerification.remove();
+        await this.createStripeCustomer(user.email, user.name);
+
         return !!user;
     }
 
@@ -133,5 +136,16 @@ export class AuthService {
             'RESET_PASSWORD.PASSWORD_CHANGED',
             isNewPasswordChanged,
         );
+    }
+
+    public async createStripeCustomer(email: string, name: string) {
+        const user = await this.authRepository.findByEmail(email);
+        if (user.stripeCustomerId) return;
+        const customer = await this.stripeClient.customers.create({
+            email,
+            name,
+        });
+        user.stripeCustomerId = customer.id;
+        await user.save();
     }
 }
