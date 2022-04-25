@@ -1,5 +1,6 @@
 import { fetchJson } from '@api/index';
-
-export const getPaymentIntentToken = (token: string) => {
-    return fetchJson('/payments/paymentIntent', {}, token);
+export const getSetupIntentToken = (
+    token: string
+): Promise<{ clientSecret: string }> => {
+    return fetchJson('/payments/secret', {}, token);
 };

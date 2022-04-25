@@ -8,8 +8,9 @@ export class PaymentService {
     public constructor(@InjectStripe() private readonly stripeClient: Stripe) {}
 
     public async getSecret(stripeCustomerId: string) {
-        return this.stripeClient.setupIntents.create({
+        const setupIntent = await this.stripeClient.setupIntents.create({
             customer: stripeCustomerId,
         });
+        return { clientSecret: setupIntent.client_secret };
     }
 }

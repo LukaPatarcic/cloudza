@@ -10,7 +10,7 @@ import { PaymentService } from '@feature/payment/payment.service';
 export class PaymentController {
     constructor(private readonly paymentService: PaymentService) {}
 
-    @Get('/paymentIntent')
+    @Get('/secret')
     public async getSecret(@GetUser() user: User) {
         return this.paymentService.getSecret(user.stripeCustomerId);
     }

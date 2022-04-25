@@ -1,61 +1,126 @@
-import { useState } from 'react';
+import { FC, useState } from 'react';
 
-import Button from '@mui/material/Button';
+import { Grid, TextField } from '@mui/material';
 import {
-    CardCvcElement,
-    CardExpiryElement,
     CardNumberElement,
     useElements,
     useStripe,
 } from '@stripe/react-stripe-js';
 
-import useOptions from '@module/Stripe/useOptions';
+import SubmitButton from '@element/SubmitButton/SubmitButton';
+import { StripeTextFieldCVC } from '@module/Stripe/StripeTextFieldCVC';
+import { StripeTextFieldExpiry } from '@module/Stripe/StripeTextFieldExpiry';
+import { StripeTextFieldNumber } from '@module/Stripe/StripeTextFieldNumber';
+import { CheckoutProps } from '@type/components/CheckoutProps';
 
-const StripeCheckoutForm = () => {
+const StripeCheckoutForm: FC<CheckoutProps> = ({ clientSecret }) => {
     const [name, setName] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const [state, setState] = useState<{
+        cardNameComplete: boolean;
+        cardNumberComplete: boolean;
+        expiredComplete: boolean;
+        cvcComplete: boolean;
+        cardNameError: string | null;
+        cardNumberError: string | null;
+        expiredError: string | null;
+        cvcError: string | null;
+    }>({
+        cardNumberComplete: false,
+        cardNameComplete: false,
+        expiredComplete: false,
+        cvcComplete: false,
+        cardNumberError: null,
+        cardNameError: null,
+        expiredError: null,
+        cvcError: null,
+    });
     const stripe = useStripe();
     const elements = useElements();
-    const options = useOptions();
+    const { cardNumberError, expiredError, cvcError, cardNameError } = state;
 
     const handleSubmit = async (event: any) => {
         event.preventDefault();
         if (!stripe || !elements) return;
         const card = elements.getElement(CardNumberElement);
         if (!card) return;
-
-        const payload = await stripe.createPaymentMethod({
-            type: 'card',
-            card,
-            billing_details: {
-                name,
+        setIsLoading(true);
+        const result = await stripe.confirmCardSetup(clientSecret, {
+            payment_method: {
+                card,
+                billing_details: {
+                    name,
+                },
             },
         });
+        setIsLoading(false);
 
-        console.log('[PaymentMethod]', payload);
+        console.log('[PaymentMethod]', result);
     };
+
+    const onElementChange =
+        (field: string, errorField: string) =>
+        ({
+            complete,
+            error = { message: null },
+        }: {
+            complete: boolean;
+            error: { message: string | null };
+        }) => {
+            setState({
+                ...state,
+                [field]: complete,
+                [errorField]: error.message,
+            });
+        };
 
     return (
         <form onSubmit={handleSubmit}>
-            <label>
-                Card number
-                <input
-                    value={name}
-                    onChange={(event) => setName(event.target.value)}
-                />
-            </label>
-            <label>
-                Card number
-                <CardNumberElement options={options} />
-            </label>
-            <label>
-                Expiration date
-                <CardExpiryElement options={options} />
-            </label>
-            <label>
-                CVC
-                <CardCvcElement options={options} />
-            </label>
-            <Button
+            <Grid container spacing={2}>
+                <Grid item xs={12} md={12}>
+                    <TextField
+                        value={name}
+                        label="Name"
+                        placeholder="John Doe"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        fullWidth
+                        onChange={(e) => setName(e.target.value)}
+                        error={!!cardNameError}
+                        helperText={cardNameError}
+                    />
+                </Grid>
+                <Grid item xs={12} md={12}>
+                    <StripeTextFieldNumber
+                        error={Boolean(cardNumberError)}
+                        labelErrorMessage={cardNumberError}
+                        onChange={onElementChange(
+                            'cardNumberComplete',
+                            'cardNumberError'
+                        )}
+                    />
+                </Grid>
+                <Grid item xs={6} sm={6}>
+                    <StripeTextFieldExpiry
+                        error={Boolean(expiredError)}
+                        labelErrorMessage={expiredError}
+                        onChange={onElementChange(
+                            'expiredComplete',
+                            'expiredError'
+                        )}
+                    />
+                </Grid>
+                <Grid item xs={6} sm={6}>
+                    <StripeTextFieldCVC
+                        error={Boolean(cvcError)}
+                        labelErrorMessage={cvcError}
+                        onChange={onElementChange('cvcComplete', 'cvcError')}
+                    />
+                </Grid>
+            </Grid>
+            <SubmitButton
+                isLoading={isLoading}
                 sx={{ marginTop: 2 }}
                 variant="contained"
                 fullWidth
@@ -63,7 +128,7 @@ const StripeCheckoutForm = () => {
                 disabled={!stripe}
             >
                 Pay
-            </Button>
+            </SubmitButton>
         </form>
     );
 };

@@ -1,17 +1,17 @@
 import * as React from 'react';
 
-import { GetServerSideProps } from 'next';
+import { GetServerSideProps, NextPage } from 'next';
 
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import { getToken } from 'next-auth/jwt';
 
-import { getPaymentIntentToken } from '@api/payment';
+import { getSetupIntentToken } from '@api/payment';
 import DashboardLayout from '@layout/DashboardLayout/DashboardLayout';
 import StripeCheckout from '@module/Stripe/StripeCheckout';
+import { CheckoutProps } from '@type/components/CheckoutProps';
 
-const Checkout = ({ paymentIntentToken }) => {
-    console.log(paymentIntentToken);
+const Checkout: NextPage<CheckoutProps> = ({ clientSecret }) => {
     return (
         <DashboardLayout>
             <Grid container spacing={3}>
@@ -23,7 +23,7 @@ const Checkout = ({ paymentIntentToken }) => {
                             flexDirection: 'column',
                         }}
                     >
-                        <StripeCheckout />
+                        <StripeCheckout clientSecret={clientSecret} />
                     </Paper>
                 </Grid>
             </Grid>
@@ -34,9 +34,9 @@ const Checkout = ({ paymentIntentToken }) => {
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const token = await getToken(ctx);
     const accessToken = (token?.accessToken as string) ?? '';
-    const paymentIntentToken = await getPaymentIntentToken(accessToken);
+    const clientSecret = await getSetupIntentToken(accessToken);
     return {
-        props: { paymentIntentToken },
+        props: { clientSecret: clientSecret.clientSecret },
     };
 };
 
