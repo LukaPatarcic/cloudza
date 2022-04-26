@@ -4,17 +4,23 @@ import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProviders from 'next-auth/providers/credentials';
 
 import { signIn } from '@api/auth';
-
+const MAX_AGE = 86400;
 const options: NextAuthOptions = {
     pages: {
         signIn: '/login',
     },
+    session: {
+        strategy: 'jwt',
+        maxAge: MAX_AGE,
+    },
+    jwt: {
+        maxAge: MAX_AGE,
+    },
     callbacks: {
         session: ({ session, token }) => {
             session.accessToken = token.bearerToken;
-            session.userId = token.userId;
-            session.roles = token.roles;
-            session.user = { name: `${token.firstName} ${token.lastName}` };
+            session.id = token.id;
+            session.user = { name: token.name };
             return session;
         },
         jwt: async ({ token, user }) => {

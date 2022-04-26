@@ -16,7 +16,6 @@ export const StripeInput = React.forwardRef<any, InputBaseComponentProps>(
             }),
             [mountNode]
         );
-
         return (
             <Component
                 onReady={setMountNode}
@@ -27,7 +26,6 @@ export const StripeInput = React.forwardRef<any, InputBaseComponentProps>(
                             color: theme.palette.text.primary,
                             fontSize: '16px',
                             lineHeight: '1.4375em', // 23px
-                            fontFamily: theme.typography.fontFamily,
                             '::placeholder': {
                                 color: alpha(theme.palette.text.primary, 0.42),
                             },

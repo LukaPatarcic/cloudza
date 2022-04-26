@@ -47,7 +47,14 @@ export class User extends TimestampEntity {
         unique: true,
     })
     @Exclude()
-    stripeCustomerId: string;
+    customerId: string;
+
+    @Column({
+        nullable: true,
+        unique: true,
+    })
+    @Exclude()
+    paymentMethodId: string;
 
     @Column({ default: false, type: 'boolean' })
     @Exclude()

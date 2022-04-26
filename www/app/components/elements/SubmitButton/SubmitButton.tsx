@@ -6,17 +6,24 @@ import Button from '@mui/material/Button';
 
 interface Props {
     isLoading: boolean;
+    disabled?: boolean;
     children: ReactNode;
 }
 
-const SubmitButton: FC<Props> = ({ isLoading, children }) => {
+const SubmitButton: FC<Props> = ({
+    isLoading,
+    children,
+    disabled,
+    ...rest
+}) => {
     return (
         <Button
             type="submit"
             fullWidth
             variant="contained"
-            disabled={isLoading}
+            disabled={isLoading || disabled}
             sx={{ mt: 3, mb: 2 }}
+            {...rest}
         >
             {isLoading ? (
                 <CircularProgress style={{ color: 'white' }} />

@@ -3,7 +3,7 @@ import { TypographyOptions } from '@mui/material/styles/createTypography';
 import palette from './palette';
 
 const typography: TypographyOptions = {
-    fontFamily: 'Lato',
+    fontFamily: 'Roboto',
     h1: {
         color: palette.text!.primary,
         fontWeight: 900,

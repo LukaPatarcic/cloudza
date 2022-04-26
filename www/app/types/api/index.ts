@@ -23,3 +23,9 @@ export interface IResetPassword {
     newPassword: string;
     passwordConfirm?: string;
 }
+
+export interface JwtPayload {
+    id: number;
+    email: string;
+    name: string;
+}

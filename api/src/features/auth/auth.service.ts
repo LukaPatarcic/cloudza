@@ -52,7 +52,11 @@ export class AuthService {
             );
         }
 
-        const payload: JwtPayload = { id: user.id, email: user.email };
+        const payload: JwtPayload = {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+        };
         const accessToken = this.jwtService.sign(payload);
 
         return { accessToken, ...payload };
@@ -140,12 +144,12 @@ export class AuthService {
 
     public async createStripeCustomer(email: string, name: string) {
         const user = await this.authRepository.findByEmail(email);
-        if (user.stripeCustomerId) return;
+        if (user.customerId) return;
         const customer = await this.stripeClient.customers.create({
             email,
             name,
         });
-        user.stripeCustomerId = customer.id;
+        user.customerId = customer.id;
         await user.save();
     }
 }

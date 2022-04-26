@@ -1,6 +1,6 @@
-import { FC, useState } from 'react';
+import { FC, FormEvent, useState } from 'react';
 
-import { Grid, TextField } from '@mui/material';
+import { Alert, Grid, TextField } from '@mui/material';
 import {
     CardNumberElement,
     useElements,
@@ -12,20 +12,17 @@ import { StripeTextFieldCVC } from '@module/Stripe/StripeTextFieldCVC';
 import { StripeTextFieldExpiry } from '@module/Stripe/StripeTextFieldExpiry';
 import { StripeTextFieldNumber } from '@module/Stripe/StripeTextFieldNumber';
 import { CheckoutProps } from '@type/components/CheckoutProps';
+import { StripeCardState } from '@type/components/StripeCardState';
+import { Message } from '@type/index';
 
 const StripeCheckoutForm: FC<CheckoutProps> = ({ clientSecret }) => {
     const [name, setName] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [state, setState] = useState<{
-        cardNameComplete: boolean;
-        cardNumberComplete: boolean;
-        expiredComplete: boolean;
-        cvcComplete: boolean;
-        cardNameError: string | null;
-        cardNumberError: string | null;
-        expiredError: string | null;
-        cvcError: string | null;
-    }>({
+    const [message, setMessage] = useState<Message>({
+        message: '',
+        severity: 'success',
+    });
+    const [state, setState] = useState<StripeCardState>({
         cardNumberComplete: false,
         cardNameComplete: false,
         expiredComplete: false,
@@ -39,27 +36,55 @@ const StripeCheckoutForm: FC<CheckoutProps> = ({ clientSecret }) => {
     const elements = useElements();
     const { cardNumberError, expiredError, cvcError, cardNameError } = state;
 
-    const handleSubmit = async (event: any) => {
+    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        if (!stripe || !elements) return;
+        if (
+            !stripe ||
+            !elements ||
+            cardNumberError ||
+            expiredError ||
+            cvcError ||
+            cardNameError
+        )
+            return;
         const card = elements.getElement(CardNumberElement);
         if (!card) return;
         setIsLoading(true);
-        const result = await stripe.confirmCardSetup(clientSecret, {
-            payment_method: {
-                card,
-                billing_details: {
-                    name,
+        stripe
+            .confirmCardSetup(clientSecret, {
+                payment_method: {
+                    card,
+                    billing_details: {
+                        name,
+                    },
                 },
-            },
-        });
-        setIsLoading(false);
-
-        console.log('[PaymentMethod]', result);
+            })
+            .then((res) => {
+                if (res.error?.message) {
+                    setMessage({
+                        message: res.error.message,
+                        severity: 'error',
+                    });
+                    return;
+                }
+                setMessage({
+                    message: 'Successfully added card',
+                    severity: 'success',
+                });
+            })
+            .catch(() => {
+                setMessage({
+                    message: 'Something went wrong...',
+                    severity: 'error',
+                });
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
     };
 
     const onElementChange =
-        (field: string, errorField: string) =>
+        (field: string, errorField: string): any =>
         ({
             complete,
             error = { message: null },
@@ -118,17 +143,19 @@ const StripeCheckoutForm: FC<CheckoutProps> = ({ clientSecret }) => {
                         onChange={onElementChange('cvcComplete', 'cvcError')}
                     />
                 </Grid>
+                {message.message && (
+                    <Grid item xs={12}>
+                        <Alert severity={message.severity}>
+                            {message.message}
+                        </Alert>
+                    </Grid>
+                )}
+                <Grid item xs={12}>
+                    <SubmitButton isLoading={isLoading} disabled={!stripe}>
+                        Pay
+                    </SubmitButton>
+                </Grid>
             </Grid>
-            <SubmitButton
-                isLoading={isLoading}
-                sx={{ marginTop: 2 }}
-                variant="contained"
-                fullWidth
-                type="submit"
-                disabled={!stripe}
-            >
-                Pay
-            </SubmitButton>
         </form>
     );
 };

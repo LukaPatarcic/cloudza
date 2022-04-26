@@ -1,4 +1,12 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    InternalServerErrorException,
+    Post,
+    UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
 import { User } from '@feature/auth/entity/user.entity';
@@ -12,6 +20,31 @@ export class PaymentController {
 
     @Get('/secret')
     public async getSecret(@GetUser() user: User) {
-        return this.paymentService.getSecret(user.stripeCustomerId);
+        console.log(user);
+        return this.paymentService.getSecret(user.customerId);
+    }
+
+    @Post('/method')
+    public async savePaymentMethod(
+        @GetUser() user: User,
+        @Body() data: { paymentMethodId: string },
+    ) {
+        try {
+            return this.paymentService.savePaymentMethod(
+                user,
+                data.paymentMethodId,
+            );
+        } catch (err) {
+            throw new InternalServerErrorException();
+        }
+    }
+
+    @Delete('/method')
+    public async deletePaymentMethod(@GetUser() user: User) {
+        try {
+            return this.paymentService.deletePaymentMethod(user);
+        } catch (err) {
+            throw new InternalServerErrorException();
+        }
     }
 }
