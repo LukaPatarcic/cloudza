@@ -6,7 +6,7 @@ import clsx from 'clsx';
 
 import Image from '@element/Image/Image';
 import SectionHeader from '@element/SectionHeader/SectionHeader';
-import CountUpNumber from '@module/CountUpNumber/CountUpNumber';
+import CountUpNumber from '@module/HomeElements/CountUpNumber/CountUpNumber';
 
 interface Props {
     className?: string;

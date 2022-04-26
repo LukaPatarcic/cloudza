@@ -3,12 +3,17 @@ import { useEffect } from 'react';
 import type { AppProps } from 'next/app';
 
 import { CacheProvider, EmotionCache } from '@emotion/react';
+import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
+import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
 import CssBaseline from '@mui/material/CssBaseline';
 import { StyledEngineProvider } from '@mui/material/styles';
 import { ThemeProvider } from '@mui/styles';
 import { SessionProvider } from 'next-auth/react';
 import NextNProgress from 'nextjs-progressbar';
 import '@style/app.scss';
+import { SnackbarProvider } from 'notistack';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 import { APP_NAME } from '@constant/index';
@@ -48,22 +53,41 @@ function MyApp({
                 >
                     <QueryClientProvider client={queryClient}>
                         <ThemeProvider theme={theme}>
-                            <CssBaseline />
-                            <title>{APP_NAME}</title>
-                            <NextNProgress
-                                nonce={APP_NAME}
-                                color={theme.palette.primary.main}
-                                showOnShallow={false}
-                                startPosition={0.4}
-                                stopDelayMs={200}
-                                height={3}
-                                options={{
-                                    trickleRate: 0.05,
-                                    trickleSpeed: 500,
-                                    showSpinner: false,
+                            <SnackbarProvider
+                                maxSnack={3}
+                                preventDuplicate
+                                anchorOrigin={{
+                                    horizontal: 'right',
+                                    vertical: 'bottom',
                                 }}
-                            />
-                            <Component {...pageProps} />
+                                iconVariant={{
+                                    success: (
+                                        <CheckCircleOutlineOutlinedIcon
+                                            sx={{ marginRight: 5 }}
+                                        />
+                                    ),
+                                    error: <ErrorOutlineOutlinedIcon />,
+                                    info: <InfoOutlinedIcon />,
+                                    warning: <WarningAmberOutlinedIcon />,
+                                }}
+                            >
+                                <CssBaseline />
+                                <title>{APP_NAME}</title>
+                                <NextNProgress
+                                    nonce={APP_NAME}
+                                    color={theme.palette.primary.main}
+                                    showOnShallow={false}
+                                    startPosition={0.4}
+                                    stopDelayMs={200}
+                                    height={3}
+                                    options={{
+                                        trickleRate: 0.05,
+                                        trickleSpeed: 500,
+                                        showSpinner: false,
+                                    }}
+                                />
+                                <Component {...pageProps} />
+                            </SnackbarProvider>
                         </ThemeProvider>
                     </QueryClientProvider>
                 </SessionProvider>

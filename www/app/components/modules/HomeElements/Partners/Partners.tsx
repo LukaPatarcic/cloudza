@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import CardBase from '@element/CardBase/CardBase';
 import Image from '@element/Image/Image';
 import SectionHeader from '@element/SectionHeader/SectionHeader';
-import LearnMoreLink from '@module/LearnMoreLink/LearnMoreLink';
+import LearnMoreLink from '@module/HomeElements/LearnMoreLink/LearnMoreLink';
 
 interface Props {
     className?: string;

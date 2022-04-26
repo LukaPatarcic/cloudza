@@ -6,8 +6,8 @@ import { makeStyles, useTheme } from '@mui/styles';
 import clsx from 'clsx';
 
 import SectionHeader from '@element/SectionHeader/SectionHeader';
-import CardPricingStandard from '@module/CardPricingStandard/CardPricingStandard';
-import LearnMoreLink from '@module/LearnMoreLink/LearnMoreLink';
+import CardPricingStandard from '@module/HomeElements/CardPricingStandard/CardPricingStandard';
+import LearnMoreLink from '@module/HomeElements/LearnMoreLink/LearnMoreLink';
 
 interface Props {
     className?: string;

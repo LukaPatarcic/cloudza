@@ -1,14 +1,15 @@
 import * as React from 'react';
-import { BaseSyntheticEvent, useState } from 'react';
+import { useState } from 'react';
 
 import { GetServerSideProps, NextPage } from 'next';
 
 import { useRouter } from 'next/router';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import { getCsrfToken } from 'next-auth/react';
+import { getCsrfToken, signIn } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 
+import { DASHBOARD_ROUTE } from '@constant/routes';
 import HeaderLayout from '@layout/HeaderLayout/HeaderLayout';
 import LoginPage from '@template/LoginPage/LoginPage';
 import { ILoginFormInputs } from '@type/validations/auth';
@@ -27,14 +28,32 @@ const Login: NextPage<Props> = ({ csrfToken }) => {
         resolver: yupResolver(loginSchema),
     });
     const [isLoading, setIsLoading] = useState(false);
-
+    const [error, setError] = useState('');
     const router = useRouter();
-    const onSubmit = (
-        data: ILoginFormInputs,
-        e?: BaseSyntheticEvent<unknown>
-    ) => {
+    const onSubmit = (data: ILoginFormInputs) => {
         setIsLoading(true);
-        e?.target.submit();
+        signIn<any>('credentials', {
+            redirect: false,
+            email: data.email,
+            password: data.password,
+        })
+            .then((res) => {
+                if (!res) return;
+                if (!res?.ok) {
+                    setError('Incorrect email or password');
+                    return;
+                }
+                router.push(
+                    router.query?.callbackUrl?.toString() || DASHBOARD_ROUTE
+                );
+            })
+            .catch(() => {
+                setError('Something went wrong...');
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
+        // e?.target.submit();
     };
 
     return (
@@ -47,6 +66,7 @@ const Login: NextPage<Props> = ({ csrfToken }) => {
                 handleSubmit={handleSubmit}
                 csrfToken={csrfToken}
                 router={router}
+                error={error}
             />
         </HeaderLayout>
     );

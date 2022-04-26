@@ -9,11 +9,13 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 
 import { FORGOT_PASSWORD, REGISTER_ROUTE } from '@constant/routes';
+import PasswordTextField from '@element/PasswordTextField/PasswordTextField';
 import SubmitButton from '@element/SubmitButton/SubmitButton';
 import { LoginProps } from '@type/components/LoginProps';
 
 const LoginForm: FC<LoginProps> = ({
     router,
+    error,
     handleSubmit,
     onSubmit,
     csrfToken,
@@ -43,22 +45,21 @@ const LoginForm: FC<LoginProps> = ({
                 autoFocus
                 {...register('email')}
             />
-            <TextField
+            <PasswordTextField
                 margin="normal"
                 required
                 fullWidth
                 label="Password"
-                type="password"
                 id="password"
                 error={!!errors.password}
                 helperText={errors.password?.message}
                 autoComplete="current-password"
-                {...register('password')}
+                register={register}
             />
-            {(router.query?.error || router.query?.success) && (
-                <Alert severity={router.query?.error ? 'error' : 'success'}>
-                    {router.query?.error
-                        ? 'Incorrect email or password'
+            {(error || router.query?.success) && (
+                <Alert severity={error ? 'error' : 'success'}>
+                    {error
+                        ? error
                         : 'You have successfully verified your account.'}
                 </Alert>
             )}

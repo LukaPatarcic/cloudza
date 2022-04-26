@@ -20,8 +20,11 @@ export class PaymentController {
 
     @Get('/secret')
     public async getSecret(@GetUser() user: User) {
-        console.log(user);
-        return this.paymentService.getSecret(user.customerId);
+        const clientSecret = await this.paymentService.getSecret(
+            user.customerId,
+        );
+        const hasPaymentMethod = !!user.paymentMethodId;
+        return { clientSecret, hasPaymentMethod };
     }
 
     @Post('/method')

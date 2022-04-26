@@ -18,9 +18,9 @@ const options: NextAuthOptions = {
     },
     callbacks: {
         session: ({ session, token }) => {
-            session.accessToken = token.bearerToken;
+            session.accessToken = token.accessToken;
             session.id = token.id;
-            session.user = { name: token.name };
+            session.name = token.name;
             return session;
         },
         jwt: async ({ token, user }) => {

@@ -12,6 +12,7 @@ import { LoginProps } from '@type/components/LoginProps';
 
 const LoginPage: FC<LoginProps> = ({
     router,
+    error,
     handleSubmit,
     onSubmit,
     csrfToken,
@@ -58,6 +59,7 @@ const LoginPage: FC<LoginProps> = ({
                         isLoading={isLoading}
                         csrfToken={csrfToken}
                         router={router}
+                        error={error}
                     />
                 </Box>
             </Grid>

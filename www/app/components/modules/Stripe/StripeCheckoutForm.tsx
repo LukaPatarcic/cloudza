@@ -1,4 +1,5 @@
 import { FC, FormEvent, useState } from 'react';
+import * as React from 'react';
 
 import { Alert, Grid, TextField } from '@mui/material';
 import {
@@ -6,8 +7,11 @@ import {
     useElements,
     useStripe,
 } from '@stripe/react-stripe-js';
+import { useSession } from 'next-auth/react';
 
+import { savePaymentMethod } from '@api/payment';
 import SubmitButton from '@element/SubmitButton/SubmitButton';
+import RemoveCard from '@module/Stripe/RemoveCard';
 import { StripeTextFieldCVC } from '@module/Stripe/StripeTextFieldCVC';
 import { StripeTextFieldExpiry } from '@module/Stripe/StripeTextFieldExpiry';
 import { StripeTextFieldNumber } from '@module/Stripe/StripeTextFieldNumber';
@@ -15,9 +19,14 @@ import { CheckoutProps } from '@type/components/CheckoutProps';
 import { StripeCardState } from '@type/components/StripeCardState';
 import { Message } from '@type/index';
 
-const StripeCheckoutForm: FC<CheckoutProps> = ({ clientSecret }) => {
+const StripeCheckoutForm: FC<CheckoutProps> = ({
+    clientSecret,
+    hasPaymentMethod,
+}) => {
     const [name, setName] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [paymentMethod, setPaymentMethod] = useState(hasPaymentMethod);
+    const { data: session } = useSession<any>();
     const [message, setMessage] = useState<Message>({
         message: '',
         severity: 'success',
@@ -36,7 +45,7 @@ const StripeCheckoutForm: FC<CheckoutProps> = ({ clientSecret }) => {
     const elements = useElements();
     const { cardNumberError, expiredError, cvcError, cardNameError } = state;
 
-    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (
             !stripe ||
@@ -49,38 +58,42 @@ const StripeCheckoutForm: FC<CheckoutProps> = ({ clientSecret }) => {
             return;
         const card = elements.getElement(CardNumberElement);
         if (!card) return;
-        setIsLoading(true);
-        stripe
-            .confirmCardSetup(clientSecret, {
+        try {
+            setIsLoading(true);
+            const setup = await stripe.confirmCardSetup(clientSecret, {
                 payment_method: {
                     card,
                     billing_details: {
                         name,
                     },
                 },
-            })
-            .then((res) => {
-                if (res.error?.message) {
-                    setMessage({
-                        message: res.error.message,
-                        severity: 'error',
-                    });
-                    return;
-                }
+            });
+
+            if (setup.error?.message) {
                 setMessage({
-                    message: 'Successfully added card',
-                    severity: 'success',
-                });
-            })
-            .catch(() => {
-                setMessage({
-                    message: 'Something went wrong...',
+                    message: setup.error.message,
                     severity: 'error',
                 });
-            })
-            .finally(() => {
-                setIsLoading(false);
+                return;
+            }
+
+            await savePaymentMethod(session!.accessToken!, {
+                paymentMethodId: setup.setupIntent!.payment_method!,
             });
+
+            setMessage({
+                message: 'Successfully added card',
+                severity: 'success',
+            });
+            setPaymentMethod(true);
+        } catch (err) {
+            setMessage({
+                message: 'Something went wrong...',
+                severity: 'error',
+            });
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     const onElementChange =
@@ -102,6 +115,10 @@ const StripeCheckoutForm: FC<CheckoutProps> = ({ clientSecret }) => {
     return (
         <form onSubmit={handleSubmit}>
             <Grid container spacing={2}>
+                <RemoveCard
+                    paymentMethod={paymentMethod}
+                    setPaymentMethod={setPaymentMethod}
+                />
                 <Grid item xs={12} md={12}>
                     <TextField
                         value={name}
@@ -111,6 +128,7 @@ const StripeCheckoutForm: FC<CheckoutProps> = ({ clientSecret }) => {
                             shrink: true,
                         }}
                         fullWidth
+                        autoComplete="off"
                         onChange={(e) => setName(e.target.value)}
                         error={!!cardNameError}
                         helperText={cardNameError}

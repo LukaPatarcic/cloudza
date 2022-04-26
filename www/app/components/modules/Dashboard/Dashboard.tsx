@@ -1,25 +1,21 @@
 import * as React from 'react';
 import { FC, ReactNode } from 'react';
 
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import MenuIcon from '@mui/icons-material/Menu';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import Badge from '@mui/material/Badge';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import MuiDrawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
-import List from '@mui/material/List';
 import { styled } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
-import Copyright from '@module/Footer/Copyright/Copyright';
-
-import { mainListItems, secondaryListItems } from './listItems';
+import AccountContextMenu from '@module/Dashboard/AccountContextMenu';
+import SidebarList from '@module/Dashboard/SidebarList';
 
 const drawerWidth = 240;
 
@@ -29,6 +25,7 @@ interface AppBarProps extends MuiAppBarProps {
 
 interface Props {
     children: ReactNode;
+    selectedItem: string;
 }
 
 const AppBar = styled(MuiAppBar, {
@@ -75,7 +72,7 @@ const Drawer = styled(MuiDrawer, {
     },
 }));
 
-const DashboardContent: FC<Props> = ({ children }) => {
+const DashboardContent: FC<Props> = ({ children, selectedItem }) => {
     const [open, setOpen] = React.useState(true);
     const toggleDrawer = () => {
         setOpen(!open);
@@ -83,7 +80,6 @@ const DashboardContent: FC<Props> = ({ children }) => {
 
     return (
         <Box sx={{ display: 'flex' }}>
-            <CssBaseline />
             <AppBar position="absolute" open={open}>
                 <Toolbar
                     sx={{
@@ -111,11 +107,7 @@ const DashboardContent: FC<Props> = ({ children }) => {
                     >
                         Dashboard
                     </Typography>
-                    <IconButton color="inherit">
-                        <Badge badgeContent={4} color="secondary">
-                            <NotificationsIcon />
-                        </Badge>
-                    </IconButton>
+                    <AccountContextMenu />
                 </Toolbar>
             </AppBar>
             <Drawer variant="permanent" open={open}>
@@ -132,11 +124,7 @@ const DashboardContent: FC<Props> = ({ children }) => {
                     </IconButton>
                 </Toolbar>
                 <Divider />
-                <List component="nav">
-                    {mainListItems}
-                    <Divider sx={{ my: 1 }} />
-                    {secondaryListItems}
-                </List>
+                <SidebarList selectedItem={selectedItem} />
             </Drawer>
             <Box
                 component="main"
@@ -153,7 +141,6 @@ const DashboardContent: FC<Props> = ({ children }) => {
                 <Toolbar />
                 <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
                     {children}
-                    <Copyright sx={{ pt: 4 }} />
                 </Container>
             </Box>
         </Box>

@@ -3,11 +3,11 @@ import { makeStyles } from '@mui/styles';
 
 import Section from '@element/Section/Section';
 import SectionAlternate from '@element/SectionAlternate/SectionAlternate';
-import Customization from '@module/Customization/Customization';
-import Hero from '@module/Hero/Hero';
-import Hub from '@module/Hub/Hub';
-import Partners from '@module/Partners/Partners';
-import Pricing from '@module/Pricing/Pricing';
+import Customization from '@module/HomeElements/Customization/Customization';
+import Hero from '@module/HomeElements/Hero/Hero';
+import Hub from '@module/HomeElements/Hub/Hub';
+import Partners from '@module/HomeElements/Partners/Partners';
+import Pricing from '@module/HomeElements/Pricing/Pricing';
 
 const integrations = [
     {

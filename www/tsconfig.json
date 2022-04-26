@@ -65,7 +65,8 @@
         "jsx": "preserve",
         "incremental": true,
         "types": [
-            "yup"
+            "yup",
+            "react-copy-to-clipboard"
         ]
     },
     "include": [

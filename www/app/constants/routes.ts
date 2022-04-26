@@ -3,3 +3,7 @@ export const LOGIN_ROUTE = '/login';
 export const FORGOT_PASSWORD = '/forgot-password';
 export const REGISTER_ROUTE = '/register';
 export const ABOUT_US_ROUTE = '/about-us';
+export const DASHBOARD_ROUTE = '/dashboard';
+export const DASHBOARD_CHECKOUT_ROUTE = '/dashboard/checkout';
+export const DASHBOARD_STATISTICS_ROUTE = '/dashboard/statistics';
+export const DASHBOARD_INTEGRATION_ROUTE = '/dashboard/integration';

@@ -4,7 +4,6 @@ import { Divider, useMediaQuery, useTheme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import clsx from 'clsx';
 
-import Footer from '@module/Footer/Footer';
 import Sidebar from '@module/Sidebar/Sidebar';
 import TopBar from '@module/Topbar/TopBar';
 
@@ -12,7 +11,7 @@ interface Props {
     children: ReactNode;
 }
 
-const useStyles: any = makeStyles(() => ({
+const useStyles = makeStyles(() => ({
     root: {
         height: '100%',
     },

@@ -2,7 +2,7 @@ import { fetchJson } from '@api/index';
 
 export const getSetupIntentToken = (
     token: string
-): Promise<{ clientSecret: string }> => {
+): Promise<{ clientSecret: string; hasPaymentMethod: boolean }> => {
     return fetchJson('/payments/secret', {}, token);
 };
 

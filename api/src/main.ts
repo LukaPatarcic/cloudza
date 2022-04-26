@@ -10,7 +10,7 @@ async function bootstrap() {
     app.enableCors({
         allowedHeaders: '*',
         origin: '*',
-        methods: ['POST', 'GET'],
+        methods: ['POST', 'GET', 'PATCH', 'PUT', 'DELETE'],
     });
 
     const config = new DocumentBuilder()
@@ -26,4 +26,4 @@ async function bootstrap() {
     await app.listen(process.env.PORT || PORT);
 }
 
-bootstrap().then(() => console.log(''));
+bootstrap();

@@ -9,6 +9,7 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 
 import { LOGIN_ROUTE } from '@constant/routes';
+import PasswordTextField from '@element/PasswordTextField/PasswordTextField';
 import SubmitButton from '@element/SubmitButton/SubmitButton';
 import { RegisterProps } from '@type/components/RegisterProps';
 
@@ -54,16 +55,15 @@ const RegisterForm: FC<RegisterProps> = ({
                     />
                 </Grid>
                 <Grid item xs={12}>
-                    <TextField
+                    <PasswordTextField
                         required
                         fullWidth
                         label="Password"
-                        type="password"
                         id="password"
                         autoComplete="new-password"
                         helperText={errors.password?.message}
                         error={!!errors.password}
-                        {...register('password')}
+                        register={register}
                     />
                 </Grid>
                 <Grid item xs={12}>

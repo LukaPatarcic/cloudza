@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 
+import PasswordTextField from '@element/PasswordTextField/PasswordTextField';
 import SubmitButton from '@element/SubmitButton/SubmitButton';
 import { ResetPasswordProps } from '@type/components/ResetPasswordProps';
 
@@ -28,7 +29,7 @@ const ResetPasswordForm: FC<ResetPasswordProps> = ({
         >
             <Grid container spacing={2}>
                 <Grid item xs={12}>
-                    <TextField
+                    <PasswordTextField
                         required
                         fullWidth
                         label="Password"
@@ -37,7 +38,7 @@ const ResetPasswordForm: FC<ResetPasswordProps> = ({
                         autoComplete="new-password"
                         helperText={errors.password?.message}
                         error={!!errors.password}
-                        {...register('password')}
+                        register={register}
                     />
                 </Grid>
                 <Grid item xs={12}>

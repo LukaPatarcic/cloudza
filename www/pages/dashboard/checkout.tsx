@@ -2,41 +2,39 @@ import * as React from 'react';
 
 import { GetServerSideProps, NextPage } from 'next';
 
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
 import { getToken } from 'next-auth/jwt';
+import { getSession } from 'next-auth/react';
 
 import { getSetupIntentToken } from '@api/payment';
 import DashboardLayout from '@layout/DashboardLayout/DashboardLayout';
-import StripeCheckout from '@module/Stripe/StripeCheckout';
+import CheckoutPage from '@template/CheckoutPage/CheckoutPage';
 import { CheckoutProps } from '@type/components/CheckoutProps';
 
-const Checkout: NextPage<CheckoutProps> = ({ clientSecret }) => {
+const Checkout: NextPage<CheckoutProps> = ({
+    clientSecret,
+    hasPaymentMethod,
+}) => {
     return (
-        <DashboardLayout>
-            <Grid container spacing={3}>
-                <Grid item xs={12}>
-                    <Paper
-                        sx={{
-                            p: 2,
-                            display: 'flex',
-                            flexDirection: 'column',
-                        }}
-                    >
-                        <StripeCheckout clientSecret={clientSecret} />
-                    </Paper>
-                </Grid>
-            </Grid>
+        <DashboardLayout selectedItem="Payments">
+            <CheckoutPage
+                clientSecret={clientSecret}
+                hasPaymentMethod={hasPaymentMethod}
+            />
         </DashboardLayout>
     );
 };
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const token = await getToken(ctx);
+    const session = await getSession(ctx);
     const accessToken = (token?.accessToken as string) ?? '';
-    const clientSecret = await getSetupIntentToken(accessToken);
+    const data = await getSetupIntentToken(accessToken);
     return {
-        props: { clientSecret: clientSecret.clientSecret },
+        props: {
+            clientSecret: data.clientSecret,
+            hasPaymentMethod: data.hasPaymentMethod,
+            session,
+        },
     };
 };
 
