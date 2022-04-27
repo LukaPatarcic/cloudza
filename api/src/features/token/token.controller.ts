@@ -3,6 +3,7 @@ import { AuthGuard } from '@nestjs/passport';
 
 import { User } from '@feature/auth/entity/user.entity';
 import { GetUser } from '@feature/auth/get-user.decorator';
+import { TokenGuard } from '@feature/token/token.guard';
 import { TokenService } from '@feature/token/token.service';
 
 @Controller('tokens')
@@ -10,8 +11,13 @@ import { TokenService } from '@feature/token/token.service';
 export class TokenController {
     constructor(private readonly tokenService: TokenService) {}
 
+    @Get()
+    async getToken(@GetUser() user: User) {
+        return this.tokenService.getToken(user);
+    }
+
     @Post()
-    // Add Guard for payment check
+    @UseGuards(TokenGuard)
     async saveToken(@GetUser() user: User) {
         return this.tokenService.saveToken(user);
     }

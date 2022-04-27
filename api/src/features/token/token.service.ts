@@ -18,6 +18,11 @@ export class TokenService {
         private readonly tokenRepository: TokenRepository,
     ) {}
 
+    public async getToken(user: User) {
+        const token = await this.tokenRepository.findOne({ where: { user } });
+        return { token: token?.hiddenToken ?? null };
+    }
+
     public async saveToken(user: User) {
         //check if user has paid for feature
         const tokens = await this.generateToken();
@@ -26,11 +31,19 @@ export class TokenService {
         });
 
         if (tokenExists) {
-            await this.updateToken(tokenExists.id, tokens.encryptedAPIKey);
+            await this.updateToken(
+                tokenExists.id,
+                tokens.encryptedAPIKey,
+                TokenService.hideToken(tokens.hashedAPIKey),
+            );
             return { token: tokens.hashedAPIKey };
         }
 
-        const token = new Token(user, tokens.encryptedAPIKey);
+        const token = new Token(
+            user,
+            tokens.encryptedAPIKey,
+            TokenService.hideToken(tokens.hashedAPIKey),
+        );
         await token.save();
 
         return { token: tokens.hashedAPIKey };
@@ -40,8 +53,8 @@ export class TokenService {
         return this.tokenRepository.delete({ user });
     }
 
-    private async updateToken(id: number, token: string) {
-        return this.tokenRepository.update(id, { token });
+    private async updateToken(id: number, token: string, hiddenToken: string) {
+        return this.tokenRepository.update(id, { token, hiddenToken });
     }
 
     private generateToken() {
@@ -53,6 +66,10 @@ export class TokenService {
         } else {
             return tokens;
         }
+    }
+
+    private static hideToken(token: string) {
+        return token.slice(0, -4).replace(/./g, '*') + token.slice(-4);
     }
 
     private static async hashToken() {

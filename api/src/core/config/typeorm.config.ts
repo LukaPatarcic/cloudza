@@ -11,7 +11,7 @@ export const typeOrmConfig: TypeOrmModuleAsyncOptions = {
         password: configService.get<string>('DATABASE_PASS'),
         database: configService.get<string>('DATABASE_NAME'),
         entities: [__dirname + '/../../**/*.entity.*'],
-        synchronize: process.env.NODE_ENV === 'development',
+        synchronize: true,
     }),
     inject: [ConfigService],
 };
