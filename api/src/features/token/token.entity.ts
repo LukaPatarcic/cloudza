@@ -13,6 +13,12 @@ import {
 @Entity()
 @Unique(['token'])
 export class Token extends TimestampEntity {
+    constructor(user: User, token: string) {
+        super();
+        this.user = user;
+        this.token = token;
+    }
+
     @PrimaryGeneratedColumn()
     id: number;
 

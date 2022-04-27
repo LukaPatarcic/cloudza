@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 
 import { GetServerSideProps } from 'next';
 
@@ -10,17 +11,37 @@ import { getSession, useSession } from 'next-auth/react';
 import { useSnackbar } from 'notistack';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
+import { deleteToken, saveToken } from '@api/token';
 import DashboardLayout from '@layout/DashboardLayout/DashboardLayout';
 
 const Integration = () => {
-    const API_TOKEN = '1243u7893eyuhf8i9whs4f983289tg2390g2n380gh';
+    const [token, setToken] = useState('');
     const { enqueueSnackbar } = useSnackbar();
-    const { data: session, status } = useSession();
-    console.log(session, status);
+    const { data: session } = useSession();
     const onCopy = () => {
         enqueueSnackbar('Successfully copied to clipboard', {
             variant: 'success',
         });
+    };
+
+    const onSave = () => {
+        saveToken(session!.accessToken!)
+            .then((data) => {
+                setToken(data.token);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
+    const onDelete = () => {
+        deleteToken(session!.accessToken!)
+            .then((res) => {
+                console.log(res);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     };
 
     return (
@@ -39,12 +60,12 @@ const Integration = () => {
                                 <TextField
                                     fullWidth
                                     disabled
-                                    value={API_TOKEN}
+                                    value={token}
                                     InputProps={{
                                         endAdornment: (
                                             <InputAdornment position="end">
                                                 <CopyToClipboard
-                                                    text={API_TOKEN}
+                                                    text={token}
                                                     onCopy={onCopy}
                                                 >
                                                     <IconButton>
@@ -57,8 +78,21 @@ const Integration = () => {
                                 />
                             </Grid>
                             <Grid item xs={12}>
-                                <Button fullWidth variant="contained">
+                                <Button
+                                    fullWidth
+                                    variant="contained"
+                                    onClick={onSave}
+                                >
                                     Generate API token
+                                </Button>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Button
+                                    fullWidth
+                                    variant="contained"
+                                    onClick={onDelete}
+                                >
+                                    Delete API token
                                 </Button>
                             </Grid>
                         </Grid>
