@@ -9,6 +9,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ResetPasswordDto } from '@feature/auth/dto/reset-password.dto';
 import { SignInDto } from '@feature/auth/dto/sign-in.dto';
 import { SignUpDto } from '@feature/auth/dto/sign-up.dto';
+import { User } from '@feature/auth/entity/user.entity';
 import { JwtPayload } from '@feature/auth/interface/jwt-payload.interface';
 import { SigInResponse } from '@feature/auth/interface/sigin-response.interface';
 import { AuthRepository } from '@feature/auth/repository/auth.repository';
@@ -104,7 +105,7 @@ export class AuthService {
         return sent;
     }
 
-    async setNewPassword(resetPassword: ResetPasswordDto) {
+    public async setNewPassword(resetPassword: ResetPasswordDto) {
         let isNewPasswordChanged = false;
         const { email, currentPassword } = resetPassword;
         if (resetPassword.email && resetPassword.currentPassword) {
@@ -151,5 +152,14 @@ export class AuthService {
         });
         user.customerId = customer.id;
         await user.save();
+    }
+
+    public async checkIfUserIsPaying(user: User) {
+        const isPayingUser = await this.authRepository.findOne({
+            where: { id: user.id },
+            select: ['paymentMethodId'],
+        });
+
+        return !!isPayingUser;
     }
 }

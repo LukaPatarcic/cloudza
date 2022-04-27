@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
@@ -11,6 +11,7 @@ import { AuthRepository } from '@feature/auth/repository/auth.repository';
 import { EmailVerificationRepository } from '@feature/auth/repository/email-verification.repository';
 import { ForgottenPasswordRepository } from '@feature/auth/repository/forgotten-password.repository';
 
+@Global()
 @Module({
     imports: [
         PassportModule.register({ defaultStrategy: 'jwt' }),
@@ -33,6 +34,6 @@ import { ForgottenPasswordRepository } from '@feature/auth/repository/forgotten-
     ],
     controllers: [AuthController],
     providers: [AuthService, JwtStrategy],
-    exports: [JwtStrategy, PassportModule],
+    exports: [JwtStrategy, PassportModule, AuthService],
 })
 export class AuthModule {}

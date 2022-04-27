@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { User } from '@feature/auth/entity/user.entity';
+import { AuthRepository } from '@feature/auth/repository/auth.repository';
 import { Token } from '@feature/token/token.entity';
 import { TokenRepository } from '@feature/token/token.repository';
 
@@ -16,6 +17,8 @@ export class TokenService {
         @InjectStripe() private readonly stripeClient: Stripe,
         @InjectRepository(TokenRepository)
         private readonly tokenRepository: TokenRepository,
+        @InjectRepository(AuthRepository)
+        private readonly authRepository: AuthRepository,
     ) {}
 
     public async getToken(user: User) {
@@ -55,6 +58,12 @@ export class TokenService {
 
     private async updateToken(id: number, token: string, hiddenToken: string) {
         return this.tokenRepository.update(id, { token, hiddenToken });
+    }
+
+    public async checkIfTokenIsValid(user: User, token: string) {
+        const dbToken = await this.tokenRepository.findOne({ where: { user } });
+        if (!dbToken) return false;
+        return bcrypt.compare(token, dbToken.token);
     }
 
     private generateToken() {

@@ -56,12 +56,23 @@ export class User extends TimestampEntity {
     @Exclude()
     paymentMethodId: string;
 
+    @Column({
+        nullable: true,
+        unique: true,
+    })
+    @Exclude()
+    subscriptionItemId: string;
+
+    @Column({
+        nullable: true,
+        unique: true,
+    })
+    @Exclude()
+    subscriptionId: string;
+
     @Column({ default: false, type: 'boolean' })
     @Exclude()
     isEmailVerified: boolean;
-
-    @Column({ default: false, type: 'boolean' })
-    isPayingCustomer: boolean;
 
     @OneToOne(() => EmailVerification)
     @JoinColumn()

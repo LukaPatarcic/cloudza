@@ -5,17 +5,19 @@ import {
     Injectable,
 } from '@nestjs/common';
 
-import { AuthService } from '@feature/auth/auth.service';
 import { User } from '@feature/auth/entity/user.entity';
+import { TokenService } from '@feature/token/token.service';
 
 @Injectable()
-export class TokenGuard implements CanActivate {
+export class WeatherGuard implements CanActivate {
     constructor(
-        @Inject(AuthService) private readonly userService: AuthService,
+        @Inject(TokenService) private readonly tokenService: TokenService,
     ) {}
     async canActivate(ctx: ExecutionContext): Promise<boolean> {
         const request = ctx.switchToHttp().getRequest();
+        const token: string = request.headers['x-api-key'];
         const user: User = request.user;
-        return await this.userService.checkIfUserIsPaying(user);
+        if (!token) return false;
+        return await this.tokenService.checkIfTokenIsValid(user, token);
     }
 }

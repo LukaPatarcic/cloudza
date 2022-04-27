@@ -14,6 +14,7 @@ import { AuthRepository } from '@feature/auth/repository/auth.repository';
 import { MailModule } from '@feature/mail/mail.module';
 import { PaymentModule } from '@feature/payment/payment.module';
 import { TokenModule } from '@feature/token/token.module';
+import { WeatherModule } from '@feature/weather/weather.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 
 import { CommandModule } from 'nestjs-command';
@@ -36,6 +37,7 @@ import { TrimMiddleware } from './core/middleware/trim.middleware';
         AuthModule,
         PaymentModule,
         TokenModule,
+        WeatherModule,
     ],
 })
 export class AppModule implements NestModule {
