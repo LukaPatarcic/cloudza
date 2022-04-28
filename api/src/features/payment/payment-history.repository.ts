@@ -1,4 +1,4 @@
-import { PaymentHistory } from '@feature/payment/entity/payment-history.entity';
+import { PaymentHistory } from '@feature/payment/payment-history.entity';
 
 import { EntityRepository, Repository } from 'typeorm';
 

@@ -4,16 +4,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 import { User } from '@feature/auth/entity/user.entity';
 import { AuthRepository } from '@feature/auth/repository/auth.repository';
+import { PaymentHistoryRepository } from '@feature/payment/payment-history.repository';
 import { Price, Product } from '@feature/payment/product.interface';
-import { PaymentHistoryRepository } from '@feature/payment/repository/payment-history.repository';
-import { PaymentPriceRepository } from '@feature/payment/repository/payment-price.repository';
-import { PaymentProductRepository } from '@feature/payment/repository/payment-product.repository';
 
 import { InjectStripe } from 'nestjs-stripe';
 import Stripe from 'stripe';
-
-// TODO(Luka Patarcic) replace with database call
-const ITEM_PRICE = 'price_1KooEPEjKEiPMUzsPKQSWF1R';
 
 @Injectable()
 export class PaymentService {
@@ -24,10 +19,6 @@ export class PaymentService {
         private readonly authRepository: AuthRepository,
         @InjectRepository(PaymentHistoryRepository)
         private readonly paymentHistoryRepository: PaymentHistoryRepository,
-        @InjectRepository(PaymentProductRepository)
-        private readonly paymentProductRepository: PaymentProductRepository,
-        @InjectRepository(PaymentPriceRepository)
-        private readonly paymentPriceRepository: PaymentPriceRepository,
     ) {}
 
     public async getSecret(customerId: string) {
@@ -105,15 +96,6 @@ export class PaymentService {
 
     private removeSubscription(user: User) {
         return this.stripeClient.subscriptions.del(user.subscriptionId);
-    }
-
-    private async attachPaymentMethod(
-        paymentMethodId: string,
-        customerId: string,
-    ) {
-        return this.stripeClient.paymentMethods.attach(paymentMethodId, {
-            customer: customerId,
-        });
     }
 
     private async detachPaymentMethod(paymentMethodId: string) {

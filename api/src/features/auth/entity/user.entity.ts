@@ -1,7 +1,7 @@
 import { TimestampEntity } from '@entity/timestamp.entity';
 import { EmailVerification } from '@feature/auth/entity/email-verification.entity';
 import { ForgottenPassword } from '@feature/auth/entity/forgotten-password.entity';
-import { PaymentHistory } from '@feature/payment/entity/payment-history.entity';
+import { PaymentHistory } from '@feature/payment/payment-history.entity';
 import { RequestHistory } from '@feature/request-history/request-history.entity';
 import { Token } from '@feature/token/token.entity';
 
