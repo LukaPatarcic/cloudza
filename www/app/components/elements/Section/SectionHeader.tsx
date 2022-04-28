@@ -32,6 +32,7 @@ interface Props {
     labelProps?: object;
     titleProps?: object;
     subtitleProps?: object;
+    ctaWrapperProps?: object;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -72,6 +73,7 @@ const SectionHeader: FC<Props> = ({
     labelProps = {},
     titleProps = {},
     subtitleProps = {},
+    ctaWrapperProps = {},
     ...rest
 }) => {
     const classes = useStyles();
@@ -145,8 +147,10 @@ const SectionHeader: FC<Props> = ({
                     <Grid
                         container
                         alignItems="center"
+                        justifyContent="center"
                         wrap="nowrap"
                         className="section-header__cta-container"
+                        {...ctaWrapperProps}
                     >
                         {ctaGroup.map((item, index) => (
                             <div

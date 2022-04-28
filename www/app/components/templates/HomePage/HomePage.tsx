@@ -1,6 +1,3 @@
-import { colors, Divider } from '@mui/material';
-import { makeStyles } from '@mui/styles';
-
 import Section from '@element/Section/Section';
 import SectionAlternate from '@element/Section/SectionAlternate';
 import Customization from '@module/HomeElements/Customization/Customization';
@@ -8,6 +5,8 @@ import Hero from '@module/HomeElements/Hero/Hero';
 import Hub from '@module/HomeElements/Hub/Hub';
 import Partners from '@module/HomeElements/Partners/Partners';
 import Pricing from '@module/HomeElements/Pricing/Pricing';
+import { colors, Divider } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 
 const integrations = [
     {
@@ -51,7 +50,6 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: 0,
     },
     shape: {
-        // background: theme.palette.background.default,
         borderBottomRightRadius: '50%',
         borderBottom: `1px solid ${colors.grey[200]}`,
     },

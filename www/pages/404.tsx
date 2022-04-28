@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { useRouter } from 'next/router';
+
 import { Button, Link } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
@@ -35,10 +37,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const NotFound = () => {
+    const router = useRouter();
     const classes = useStyles();
 
     const handleClick = () => {
-        window.history.back();
+        router.back();
     };
 
     return (
@@ -60,7 +63,7 @@ const NotFound = () => {
                         labelProps={{
                             color: 'secondary',
                             className: classes.label,
-                            variant: 'h5',
+                            variant: 'h1',
                         }}
                         ctaGroup={[
                             <Button
