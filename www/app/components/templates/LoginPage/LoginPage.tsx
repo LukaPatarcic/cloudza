@@ -1,13 +1,12 @@
 import * as React from 'react';
 import { FC } from 'react';
 
+import LoginForm from '@module/Form/LoginForm/LoginForm';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-
-import LoginForm from '@module/Form/LoginForm/LoginForm';
 import { LoginProps } from '@type/components/LoginProps';
 
 const LoginPage: FC<LoginProps> = ({
@@ -25,7 +24,7 @@ const LoginPage: FC<LoginProps> = ({
             <Grid
                 item
                 xs={false}
-                sm={4}
+                sm={false}
                 md={7}
                 sx={{
                     backgroundImage: 'url(/images/login.jpg)',
@@ -35,7 +34,7 @@ const LoginPage: FC<LoginProps> = ({
                     backgroundPosition: 'center',
                 }}
             />
-            <Grid item xs={12} sm={8} md={5}>
+            <Grid item xs={12} sm={12} md={5}>
                 <Box
                     sx={{
                         my: 8,
