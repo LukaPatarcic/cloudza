@@ -16,7 +16,6 @@ import { ResetPasswordDto } from '@feature/auth/dto/reset-password.dto';
 import { SignInDto } from '@feature/auth/dto/sign-in.dto';
 import { SignUpDto } from '@feature/auth/dto/sign-up.dto';
 import { SigInResponse } from '@feature/auth/interface/sigin-response.interface';
-import { MailService } from '@feature/mail/mail.service';
 
 import { ResponseError, ResponseSuccess } from '../../core/dto/response.dto';
 import { IResponse } from '../../core/interface/response.interface';
@@ -45,9 +44,9 @@ export class AuthController {
 
     @Get('/verify/:token')
     @Redirect()
-    public async verifyEmail(@Param() params) {
+    public async verifyEmail(@Param('token') token: string) {
         try {
-            await this.authService.verifyEmail(params.token);
+            await this.authService.verifyEmail(token);
             return { url: `${this.wwwUrl}/login?success=true` };
         } catch (error) {
             throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -55,10 +54,12 @@ export class AuthController {
     }
 
     @Get('/resend-verification/:email')
-    public async sendEmailVerification(@Param() params): Promise<IResponse> {
+    public async sendEmailVerification(
+        @Param('email') email: string,
+    ): Promise<IResponse> {
         try {
             const isEmailSent = await this.authService.sendEmailVerification(
-                params.email,
+                email,
             );
             if (isEmailSent) {
                 return new ResponseSuccess('LOGIN.EMAIL_RESENT', null);
@@ -70,10 +71,12 @@ export class AuthController {
     }
 
     @Get('/forgot-password/:email')
-    public async sendEmailForgotPassword(@Param() params): Promise<IResponse> {
+    public async sendEmailForgotPassword(
+        @Param('email') email: string,
+    ): Promise<IResponse> {
         try {
             const isEmailSent = await this.authService.sendEmailForgotPassword(
-                params.email,
+                email,
             );
             if (isEmailSent) {
                 return new ResponseSuccess('LOGIN.EMAIL_RESENT', null);

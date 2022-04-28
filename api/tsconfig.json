@@ -8,6 +8,9 @@
       "@config/*": [
         "core/config/*"
       ],
+      "@middleware/*": [
+        "core/middleware/*"
+      ],
       "@decorator/*": [
         "core/decorator/*"
       ],
@@ -30,7 +33,7 @@
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": false,
-    "noImplicitAny": false,
+    "noImplicitAny": true,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false

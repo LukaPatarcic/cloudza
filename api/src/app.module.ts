@@ -13,14 +13,14 @@ import { AuthModule } from '@feature/auth/auth.module';
 import { AuthRepository } from '@feature/auth/repository/auth.repository';
 import { MailModule } from '@feature/mail/mail.module';
 import { PaymentModule } from '@feature/payment/payment.module';
+import { RequestHistoryModule } from '@feature/request-history/request-history.module';
 import { TokenModule } from '@feature/token/token.module';
 import { WeatherModule } from '@feature/weather/weather.module';
+import { TrimMiddleware } from '@middleware/trim.middleware';
 import { MailerModule } from '@nestjs-modules/mailer';
 
 import { CommandModule } from 'nestjs-command';
 import { StripeModule } from 'nestjs-stripe';
-
-import { TrimMiddleware } from './core/middleware/trim.middleware';
 
 @Module({
     imports: [
@@ -38,6 +38,7 @@ import { TrimMiddleware } from './core/middleware/trim.middleware';
         PaymentModule,
         TokenModule,
         WeatherModule,
+        RequestHistoryModule,
     ],
 })
 export class AppModule implements NestModule {

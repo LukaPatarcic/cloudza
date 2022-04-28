@@ -1,6 +1,8 @@
 import { TimestampEntity } from '@entity/timestamp.entity';
 import { EmailVerification } from '@feature/auth/entity/email-verification.entity';
 import { ForgottenPassword } from '@feature/auth/entity/forgotten-password.entity';
+import { PaymentHistory } from '@feature/payment/entity/payment-history.entity';
+import { RequestHistory } from '@feature/request-history/request-history.entity';
 import { Token } from '@feature/token/token.entity';
 
 import * as bcrypt from 'bcrypt';
@@ -12,12 +14,13 @@ import {
     OneToOne,
     PrimaryGeneratedColumn,
     Unique,
+    OneToMany,
 } from 'typeorm';
 
 @Entity()
 @Unique(['email'])
 export class User extends TimestampEntity {
-    constructor(email, name, password, salt) {
+    constructor(email: string, name: string, password: string, salt: string) {
         super();
         this.email = email;
         this.name = name;
@@ -61,6 +64,13 @@ export class User extends TimestampEntity {
         unique: true,
     })
     @Exclude()
+    priceId: string;
+
+    @Column({
+        nullable: true,
+        unique: true,
+    })
+    @Exclude()
     subscriptionItemId: string;
 
     @Column({
@@ -85,6 +95,14 @@ export class User extends TimestampEntity {
     @OneToOne(() => Token)
     @JoinColumn()
     token: Token;
+
+    @OneToMany(() => RequestHistory, (request) => request.user)
+    @JoinColumn()
+    requestHistories: RequestHistory[];
+
+    @OneToMany(() => PaymentHistory, (payment) => payment.user)
+    @JoinColumn()
+    paymentHistories: PaymentHistory[];
 
     async validatePassword(password: string): Promise<boolean> {
         const hash = await bcrypt.hash(password, this.salt);

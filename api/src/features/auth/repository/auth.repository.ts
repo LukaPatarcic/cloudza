@@ -51,6 +51,17 @@ export class AuthRepository extends Repository<User> {
         return user;
     }
 
+    async findByCustomerId(customerId: string) {
+        const user = await this.findOne({ customerId });
+        if (!user)
+            throw new HttpException(
+                'LOGIN.USER_NOT_FOUND',
+                HttpStatus.NOT_FOUND,
+            );
+
+        return user;
+    }
+
     async setPassword(email: string, newPassword: string): Promise<boolean> {
         const user = await this.findByEmail(email);
         const { hashedPassword, salt } = await AuthRepository.generatePassword(

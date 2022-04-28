@@ -28,7 +28,9 @@ export class TrimMiddleware implements NestMiddleware {
 
         if (TrimMiddleware.isObj(value)) {
             Object.keys(value).forEach((key) => {
-                value[key] = this.trim(value[key]);
+                (value[key as keyof unknown] as any) = this.trim(
+                    value[key as keyof unknown] as any,
+                );
             });
             return value;
         }

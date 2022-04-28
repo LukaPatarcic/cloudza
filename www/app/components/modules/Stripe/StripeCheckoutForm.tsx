@@ -1,17 +1,16 @@
 import { FC, FormEvent, useState } from 'react';
 import * as React from 'react';
 
-import { Alert, Grid, TextField } from '@mui/material';
+import { Alert, Grid, Paper, TextField } from '@mui/material';
 import {
     CardNumberElement,
     useElements,
     useStripe,
 } from '@stripe/react-stripe-js';
-import { useSession } from 'next-auth/react';
 
-import { savePaymentMethod } from '@api/payment';
 import SubmitButton from '@element/SubmitButton/SubmitButton';
 import RemoveCard from '@module/Stripe/RemoveCard';
+import StripeProducts from '@module/Stripe/StripeProducts';
 import { StripeTextFieldCVC } from '@module/Stripe/StripeTextFieldCVC';
 import { StripeTextFieldExpiry } from '@module/Stripe/StripeTextFieldExpiry';
 import { StripeTextFieldNumber } from '@module/Stripe/StripeTextFieldNumber';
@@ -20,13 +19,14 @@ import { StripeCardState } from '@type/components/StripeCardState';
 import { Message } from '@type/index';
 
 const StripeCheckoutForm: FC<CheckoutProps> = ({
+    products,
     clientSecret,
     hasPaymentMethod,
 }) => {
     const [name, setName] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [paymentMethod, setPaymentMethod] = useState(hasPaymentMethod);
-    const { data: session } = useSession<any>();
+    const [selectedPrice, setSelectedPrice] = useState('');
     const [message, setMessage] = useState<Message>({
         message: '',
         severity: 'success',
@@ -50,6 +50,7 @@ const StripeCheckoutForm: FC<CheckoutProps> = ({
         if (
             !stripe ||
             !elements ||
+            !selectedPrice ||
             cardNumberError ||
             expiredError ||
             cvcError ||
@@ -66,6 +67,9 @@ const StripeCheckoutForm: FC<CheckoutProps> = ({
                     billing_details: {
                         name,
                     },
+                    metadata: {
+                        price_id: selectedPrice,
+                    },
                 },
             });
 
@@ -76,10 +80,6 @@ const StripeCheckoutForm: FC<CheckoutProps> = ({
                 });
                 return;
             }
-
-            await savePaymentMethod(session!.accessToken!, {
-                paymentMethodId: setup.setupIntent!.payment_method!,
-            });
 
             setMessage({
                 message: 'Successfully added card',
@@ -113,68 +113,89 @@ const StripeCheckoutForm: FC<CheckoutProps> = ({
         };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <Grid container spacing={2}>
-                <RemoveCard
-                    paymentMethod={paymentMethod}
-                    setPaymentMethod={setPaymentMethod}
-                />
-                <Grid item xs={12} md={12}>
-                    <TextField
-                        value={name}
-                        label="Name"
-                        placeholder="John Doe"
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                        fullWidth
-                        autoComplete="off"
-                        onChange={(e) => setName(e.target.value)}
-                        error={!!cardNameError}
-                        helperText={cardNameError}
-                    />
-                </Grid>
-                <Grid item xs={12} md={12}>
-                    <StripeTextFieldNumber
-                        error={Boolean(cardNumberError)}
-                        labelErrorMessage={cardNumberError}
-                        onChange={onElementChange(
-                            'cardNumberComplete',
-                            'cardNumberError'
+        <>
+            <StripeProducts
+                products={products}
+                selectedPrice={selectedPrice}
+                setSelectedPrice={setSelectedPrice}
+            />
+            <Paper
+                sx={{
+                    p: 2,
+                    display: 'flex',
+                    flexDirection: 'column',
+                }}
+            >
+                <form onSubmit={handleSubmit}>
+                    <Grid container spacing={2}>
+                        <RemoveCard
+                            paymentMethod={paymentMethod}
+                            setPaymentMethod={setPaymentMethod}
+                        />
+                        <Grid item xs={12} md={12}>
+                            <TextField
+                                value={name}
+                                label="Name"
+                                placeholder="John Doe"
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                fullWidth
+                                autoComplete="off"
+                                onChange={(e) => setName(e.target.value)}
+                                error={!!cardNameError}
+                                helperText={cardNameError}
+                            />
+                        </Grid>
+                        <Grid item xs={12} md={12}>
+                            <StripeTextFieldNumber
+                                error={Boolean(cardNumberError)}
+                                labelErrorMessage={cardNumberError}
+                                onChange={onElementChange(
+                                    'cardNumberComplete',
+                                    'cardNumberError'
+                                )}
+                            />
+                        </Grid>
+                        <Grid item xs={6} sm={6}>
+                            <StripeTextFieldExpiry
+                                error={Boolean(expiredError)}
+                                labelErrorMessage={expiredError}
+                                onChange={onElementChange(
+                                    'expiredComplete',
+                                    'expiredError'
+                                )}
+                            />
+                        </Grid>
+                        <Grid item xs={6} sm={6}>
+                            <StripeTextFieldCVC
+                                error={Boolean(cvcError)}
+                                labelErrorMessage={cvcError}
+                                onChange={onElementChange(
+                                    'cvcComplete',
+                                    'cvcError'
+                                )}
+                            />
+                        </Grid>
+                        {message.message && (
+                            <Grid item xs={12}>
+                                <Alert severity={message.severity}>
+                                    {message.message}
+                                </Alert>
+                            </Grid>
                         )}
-                    />
-                </Grid>
-                <Grid item xs={6} sm={6}>
-                    <StripeTextFieldExpiry
-                        error={Boolean(expiredError)}
-                        labelErrorMessage={expiredError}
-                        onChange={onElementChange(
-                            'expiredComplete',
-                            'expiredError'
-                        )}
-                    />
-                </Grid>
-                <Grid item xs={6} sm={6}>
-                    <StripeTextFieldCVC
-                        error={Boolean(cvcError)}
-                        labelErrorMessage={cvcError}
-                        onChange={onElementChange('cvcComplete', 'cvcError')}
-                    />
-                </Grid>
-                {message.message && (
-                    <Grid item xs={12}>
-                        <Alert severity={message.severity}>
-                            {message.message}
-                        </Alert>
+                        <Grid item xs={12}>
+                            <SubmitButton
+                                isLoading={isLoading}
+                                disabled={!stripe}
+                            >
+                                Pay
+                            </SubmitButton>
+                        </Grid>
                     </Grid>
-                )}
-                <Grid item xs={12}>
-                    <SubmitButton isLoading={isLoading} disabled={!stripe}>
-                        Pay
-                    </SubmitButton>
-                </Grid>
-            </Grid>
-        </form>
+                </form>
+            </Paper>
+        </>
     );
 };
 

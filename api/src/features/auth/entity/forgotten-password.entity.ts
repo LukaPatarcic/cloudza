@@ -11,7 +11,7 @@ import {
 
 @Entity()
 export class ForgottenPassword extends TimestampEntity {
-    constructor(token, user) {
+    constructor(token: string, user: User) {
         super();
         this.token = token;
         this.user = user;
