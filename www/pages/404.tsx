@@ -4,7 +4,7 @@ import { Button, Link } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
 import Section from '@element/Section/Section';
-import SectionHeader from '@element/SectionHeader/SectionHeader';
+import SectionHeader from '@element/Section/SectionHeader';
 
 const useStyles = makeStyles((theme) => ({
     root: {},

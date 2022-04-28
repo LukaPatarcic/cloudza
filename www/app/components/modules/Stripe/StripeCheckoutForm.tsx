@@ -1,15 +1,17 @@
 import { FC, FormEvent, useState } from 'react';
 import * as React from 'react';
 
-import { Alert, Grid, Paper, TextField } from '@mui/material';
+import Link from 'next/link';
+
+import { Alert, Divider, Grid, TextField, Typography } from '@mui/material';
 import {
     CardNumberElement,
     useElements,
     useStripe,
 } from '@stripe/react-stripe-js';
 
-import SubmitButton from '@element/SubmitButton/SubmitButton';
-import RemoveCard from '@module/Stripe/RemoveCard';
+import Paper from '@element/Paper';
+import SubmitButton from '@element/SubmitButton';
 import StripeProducts from '@module/Stripe/StripeProducts';
 import { StripeTextFieldCVC } from '@module/Stripe/StripeTextFieldCVC';
 import { StripeTextFieldExpiry } from '@module/Stripe/StripeTextFieldExpiry';
@@ -25,7 +27,6 @@ const StripeCheckoutForm: FC<CheckoutProps> = ({
 }) => {
     const [name, setName] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [paymentMethod, setPaymentMethod] = useState(hasPaymentMethod);
     const [selectedPrice, setSelectedPrice] = useState('');
     const [message, setMessage] = useState<Message>({
         message: '',
@@ -85,7 +86,6 @@ const StripeCheckoutForm: FC<CheckoutProps> = ({
                 message: 'Successfully added card',
                 severity: 'success',
             });
-            setPaymentMethod(true);
         } catch (err) {
             setMessage({
                 message: 'Something went wrong...',
@@ -119,19 +119,9 @@ const StripeCheckoutForm: FC<CheckoutProps> = ({
                 selectedPrice={selectedPrice}
                 setSelectedPrice={setSelectedPrice}
             />
-            <Paper
-                sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                }}
-            >
+            <Paper>
                 <form onSubmit={handleSubmit}>
                     <Grid container spacing={2}>
-                        <RemoveCard
-                            paymentMethod={paymentMethod}
-                            setPaymentMethod={setPaymentMethod}
-                        />
                         <Grid item xs={12} md={12}>
                             <TextField
                                 value={name}
@@ -182,6 +172,19 @@ const StripeCheckoutForm: FC<CheckoutProps> = ({
                                 <Alert severity={message.severity}>
                                     {message.message}
                                 </Alert>
+                            </Grid>
+                        )}
+                        {hasPaymentMethod && (
+                            <Grid item xs={12}>
+                                <Typography>
+                                    *You have already setup your prefered plan
+                                    and credit card. If you wish to change your
+                                    card or plan you can do that here. If you
+                                    wish to remove your card on unsubscibe go to{' '}
+                                    <Link href="/dashboard/settings">
+                                        settings
+                                    </Link>
+                                </Typography>
                             </Grid>
                         )}
                         <Grid item xs={12}>

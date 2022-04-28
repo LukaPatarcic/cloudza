@@ -5,7 +5,7 @@ import { Button, Grid, Typography, useMediaQuery } from '@mui/material';
 import { makeStyles, useTheme } from '@mui/styles';
 import clsx from 'clsx';
 
-import SectionHeader from '@element/SectionHeader/SectionHeader';
+import SectionHeader from '@element/Section/SectionHeader';
 import CardPricingStandard from '@module/HomeElements/CardPricingStandard/CardPricingStandard';
 import LearnMoreLink from '@module/HomeElements/LearnMoreLink/LearnMoreLink';
 

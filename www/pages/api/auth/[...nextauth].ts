@@ -4,6 +4,7 @@ import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProviders from 'next-auth/providers/credentials';
 
 import { signIn } from '@api/auth';
+
 const MAX_AGE = 86400;
 const options: NextAuthOptions = {
     pages: {
@@ -41,8 +42,7 @@ const options: NextAuthOptions = {
                 try {
                     if (!credentials) throw new Error('Invalid Credentials');
                     const { email, password } = credentials;
-                    const data = await signIn({ email, password });
-                    return data;
+                    return await signIn({ email, password });
                 } catch (error) {
                     return null;
                 }

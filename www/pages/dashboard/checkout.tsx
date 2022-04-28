@@ -5,9 +5,10 @@ import { GetServerSideProps, NextPage } from 'next';
 import { getToken } from 'next-auth/jwt';
 import { getSession } from 'next-auth/react';
 
-import { getProducts, getSetupIntentToken } from '@api/payment';
-import DashboardLayout from '@layout/DashboardLayout/DashboardLayout';
-import CheckoutPage from '@template/CheckoutPage/CheckoutPage';
+import { getSetupIntentToken } from '@api/payment';
+import { getProducts } from '@api/product';
+import DashboardLayout from '@layout/DashboardLayout';
+import CheckoutPage from '@template/CheckoutPage';
 import { CheckoutProps } from '@type/components/CheckoutProps';
 
 const Checkout: NextPage<CheckoutProps> = ({
@@ -16,7 +17,7 @@ const Checkout: NextPage<CheckoutProps> = ({
     products,
 }) => {
     return (
-        <DashboardLayout selectedItem="Payments">
+        <DashboardLayout selectedItem="Checkout">
             <CheckoutPage
                 products={products}
                 clientSecret={clientSecret}
@@ -27,11 +28,15 @@ const Checkout: NextPage<CheckoutProps> = ({
 };
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-    const token = await getToken(ctx);
-    const session = await getSession(ctx);
+    const [token, session] = await Promise.all([
+        getToken(ctx),
+        getSession(ctx),
+    ]);
     const accessToken = (token?.accessToken as string) ?? '';
-    const data = await getSetupIntentToken(accessToken);
-    const products = await getProducts(accessToken);
+    const [data, products] = await Promise.all([
+        getSetupIntentToken(accessToken),
+        getProducts(accessToken),
+    ]);
 
     return {
         props: {

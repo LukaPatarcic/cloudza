@@ -6,12 +6,12 @@ const palette: PaletteOptions = {
         white: '#fff',
     },
     mode: 'light',
-    primary: {
-        main: '#1976d2',
-        light: 'rgb(71, 145, 219)',
-        dark: 'rgb(17, 82, 147)',
-        contrastText: '#fff',
-    },
+    // primary: {
+    //     main: '#1976d2',
+    //     light: 'rgb(71, 145, 219)',
+    //     dark: 'rgb(17, 82, 147)',
+    //     contrastText: '#fff',
+    // },
     secondary: {
         light: '#ffb74d',
         main: '#f9b934',
@@ -64,15 +64,11 @@ const palette: PaletteOptions = {
         primary: 'rgba(0, 0, 0, 0.87)',
         secondary: 'rgba(0, 0, 0, 0.54)',
         disabled: 'rgba(0, 0, 0, 0.38)',
-        // hint: 'rgba(0, 0, 0, 0.38)',
     },
     divider: 'rgba(0, 0, 0, 0.12)',
     background: {
         paper: '#fff',
         default: '#fff',
-        // level2: '#f5f5f5',
-        // level1: '#fff',
-        // footer: '#1b1642',
     },
     action: {
         active: 'rgba(0, 0, 0, 0.54)',

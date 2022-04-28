@@ -1,12 +1,11 @@
 import * as React from 'react';
 import { FC } from 'react';
 
+import Section from '@element/Section/Section';
+import SectionHeader from '@element/Section/SectionHeader';
+import RegisterForm from '@module/Form/RegisterForm/RegisterForm';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-
-import Section from '@element/Section/Section';
-import SectionHeader from '@element/SectionHeader/SectionHeader';
-import RegisterForm from '@module/Form/RegisterForm/RegisterForm';
 import { RegisterProps } from '@type/components/RegisterProps';
 
 const RegisterPage: FC<RegisterProps> = ({

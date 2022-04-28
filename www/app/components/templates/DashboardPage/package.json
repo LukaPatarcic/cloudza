@@ -1,0 +1,5 @@
+{
+    "name": "dashboard-page",
+    "version": "1.0.0",
+    "main": "DashboardPage.tsx"
+}

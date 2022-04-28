@@ -5,9 +5,9 @@ import { useForm } from 'react-hook-form';
 import { useMutation } from 'react-query';
 
 import { signUp } from '@api/auth';
-import DefaultLayout from '@layout/DefaultLayout/DefaultLayout';
+import DefaultLayout from '@layout/DefaultLayout';
+import RegisterPage from '@template/RegisterPage';
 import RegisterEmailPage from '@template/RegisterPage/RegisterEmailPage';
-import RegisterPage from '@template/RegisterPage/RegisterPage';
 import { IRegister, IServerError } from '@type/api';
 import { registerSchema } from '@validation/registerSchema';
 

@@ -5,7 +5,7 @@ import { makeStyles } from '@mui/styles';
 import clsx from 'clsx';
 
 import Image from '@element/Image/Image';
-import SectionHeader from '@element/SectionHeader/SectionHeader';
+import SectionHeader from '@element/Section/SectionHeader';
 import CountUpNumber from '@module/HomeElements/CountUpNumber/CountUpNumber';
 
 interface Props {

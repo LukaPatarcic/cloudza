@@ -13,6 +13,7 @@ import { AuthModule } from '@feature/auth/auth.module';
 import { AuthRepository } from '@feature/auth/repository/auth.repository';
 import { MailModule } from '@feature/mail/mail.module';
 import { PaymentModule } from '@feature/payment/payment.module';
+import { ProductModule } from '@feature/product/product.module';
 import { RequestHistoryModule } from '@feature/request-history/request-history.module';
 import { TokenModule } from '@feature/token/token.module';
 import { WeatherModule } from '@feature/weather/weather.module';
@@ -39,6 +40,7 @@ import { StripeModule } from 'nestjs-stripe';
         TokenModule,
         WeatherModule,
         RequestHistoryModule,
+        ProductModule,
     ],
 })
 export class AppModule implements NestModule {

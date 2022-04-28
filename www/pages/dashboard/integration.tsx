@@ -4,14 +4,19 @@ import { useState } from 'react';
 import { GetServerSideProps, NextPage } from 'next';
 
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import { Button, IconButton, InputAdornment, TextField } from '@mui/material';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
+import {
+    Button,
+    IconButton,
+    InputAdornment,
+    TextField,
+    Grid,
+} from '@mui/material';
 import { getSession, useSession } from 'next-auth/react';
 import { useSnackbar } from 'notistack';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import { deleteToken, getToken, saveToken } from '@api/token';
+import Paper from '@element/Paper';
 import DashboardLayout from '@layout/DashboardLayout/DashboardLayout';
 
 interface IntegrationProps {
@@ -53,13 +58,7 @@ const Integration: NextPage<IntegrationProps> = ({ hiddenToken }) => {
         <DashboardLayout selectedItem="Integrations">
             <Grid container spacing={3}>
                 <Grid item xs={12}>
-                    <Paper
-                        sx={{
-                            p: 2,
-                            display: 'flex',
-                            flexDirection: 'column',
-                        }}
-                    >
+                    <Paper>
                         <Grid container spacing={2}>
                             {token && (
                                 <Grid item xs={12}>

@@ -101,23 +101,4 @@ export class PaymentService {
     private async detachPaymentMethod(paymentMethodId: string) {
         return this.stripeClient.paymentMethods.detach(paymentMethodId);
     }
-
-    public async getProducts() {
-        const data: Product[] = [];
-        const products = await this.stripeClient.products.list();
-        for (const product of products.data) {
-            const { id: productId, name, description, images } = product;
-            const pricesList = await this.stripeClient.prices.list({
-                product: product.id,
-            });
-            const singlePrice = pricesList.data[0];
-            const price: Price = {
-                id: singlePrice.id,
-                unitAmount: singlePrice.unit_amount,
-            };
-            data.push({ id: productId, name, description, images, price });
-        }
-
-        return data;
-    }
 }

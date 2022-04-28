@@ -10,8 +10,8 @@ import { getCsrfToken, signIn } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 
 import { DASHBOARD_ROUTE } from '@constant/routes';
-import HeaderLayout from '@layout/HeaderLayout/HeaderLayout';
-import LoginPage from '@template/LoginPage/LoginPage';
+import HeaderLayout from '@layout/HeaderLayout';
+import LoginPage from '@template/LoginPage';
 import { ILoginFormInputs } from '@type/validations/auth';
 import { loginSchema } from '@validation/loginSchema';
 
@@ -32,18 +32,18 @@ const Login: NextPage<Props> = ({ csrfToken }) => {
     const router = useRouter();
     const onSubmit = (data: ILoginFormInputs) => {
         setIsLoading(true);
-        signIn<any>('credentials', {
+        signIn<'credentials'>('credentials', {
             redirect: false,
             email: data.email,
             password: data.password,
         })
-            .then((res) => {
+            .then(async (res) => {
                 if (!res) return;
                 if (!res?.ok) {
                     setError('Incorrect email or password');
                     return;
                 }
-                router.push(
+                await router.push(
                     router.query?.callbackUrl?.toString() || DASHBOARD_ROUTE
                 );
             })
@@ -53,7 +53,6 @@ const Login: NextPage<Props> = ({ csrfToken }) => {
             .finally(() => {
                 setIsLoading(false);
             });
-        // e?.target.submit();
     };
 
     return (

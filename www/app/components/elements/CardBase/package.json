@@ -1,0 +1,5 @@
+{
+    "name": "card-base",
+    "version": "1.0.0",
+    "main": "CardBase.tsx"
+}

@@ -7,10 +7,16 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class RequestHistory extends TimestampEntity {
-    constructor(user: User, ip: string, status: RequestHistoryStatus) {
+    constructor(
+        user: User,
+        ip: string,
+        enpoint: string,
+        status: RequestHistoryStatus,
+    ) {
         super();
         this.user = user;
         this.ip = ip;
+        this.endpoint = enpoint;
         this.status = status;
     }
 
@@ -20,6 +26,10 @@ export class RequestHistory extends TimestampEntity {
     @Column()
     @IsNotEmpty()
     ip: string;
+
+    @Column()
+    @IsNotEmpty()
+    endpoint: string;
 
     @Column()
     @IsNotEmpty()

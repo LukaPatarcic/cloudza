@@ -6,12 +6,12 @@ import {
     CardActionArea,
     CardContent,
     Grid,
-    Paper,
     Typography,
 } from '@mui/material';
 
+import Paper from '@element/Paper';
 import { formatNumberFromCent } from '@helper/formatNumber';
-import { IProduct } from '@type/api/payment';
+import { IProduct } from '@type/api/product';
 
 interface Props {
     products: IProduct[];
@@ -25,14 +25,7 @@ const StripeProducts: FC<Props> = ({
     setSelectedPrice,
 }) => {
     return (
-        <Paper
-            sx={{
-                p: 2,
-                display: 'flex',
-                flexDirection: 'column',
-                marginBottom: 2,
-            }}
-        >
+        <Paper sx={{ marginBottom: 2 }}>
             <Grid container spacing={2} justifyContent="center">
                 {products.map(({ id, name, description, price }) => (
                     <Grid item xs={12} md={4} key={id}>

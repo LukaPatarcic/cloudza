@@ -1,8 +1,10 @@
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import BarChartIcon from '@mui/icons-material/BarChart';
+import CodeIcon from '@mui/icons-material/Code';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import LayersIcon from '@mui/icons-material/Layers';
 import SettingsIcon from '@mui/icons-material/Settings';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 import {
     DASHBOARD_CHECKOUT_ROUTE,
@@ -16,8 +18,8 @@ export const mainListItems: Item[] = [
     { href: DASHBOARD_ROUTE, icon: <DashboardIcon />, title: 'Dashboard' },
     {
         href: DASHBOARD_CHECKOUT_ROUTE,
-        icon: <AttachMoneyIcon />,
-        title: 'Payments',
+        icon: <ShoppingCartIcon />,
+        title: 'Checkout',
     },
     {
         href: DASHBOARD_STATISTICS_ROUTE,
@@ -33,4 +35,8 @@ export const mainListItems: Item[] = [
 
 export const secondaryListItems: Item[] = [
     { href: '#', icon: <SettingsIcon />, title: 'Settings' },
+];
+
+export const docsListItems: Item[] = [
+    { href: '#', icon: <CodeIcon />, title: 'Weather' },
 ];

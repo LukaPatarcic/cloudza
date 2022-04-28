@@ -5,7 +5,7 @@ import { makeStyles, useTheme } from '@mui/styles';
 import clsx from 'clsx';
 
 import Image from '@element/Image/Image';
-import SectionHeader from '@element/SectionHeader/SectionHeader';
+import SectionHeader from '@element/Section/SectionHeader';
 
 interface Props {
     className?: string;

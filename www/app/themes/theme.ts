@@ -1,7 +1,6 @@
 import { createTheme, responsiveFontSizes, Theme } from '@mui/material';
 
 import palette from './palette';
-import typography from './typography';
 
 declare module '@mui/styles' {
     export interface DefaultTheme extends Theme {
@@ -27,7 +26,6 @@ declare module '@mui/material/styles' {
 const theme = responsiveFontSizes(
     createTheme({
         palette,
-        typography,
         layout: {
             contentWidth: 1140,
         },

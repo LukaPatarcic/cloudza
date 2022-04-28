@@ -7,8 +7,8 @@ import { useForm } from 'react-hook-form';
 import { useMutation } from 'react-query';
 
 import { forgotPassword } from '@api/auth';
-import DefaultLayout from '@layout/DefaultLayout/DefaultLayout';
-import ForgotPasswordPage from '@template/ForgotPasswordPage/ForgotPasswordPage';
+import DefaultLayout from '@layout/DefaultLayout';
+import ForgotPasswordPage from '@template/ForgotPasswordPage';
 import { IServerError } from '@type/api';
 import { forgotPasswordSchema } from '@validation/forgotPasswordSchema';
 

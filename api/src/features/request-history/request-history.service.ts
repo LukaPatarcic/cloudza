@@ -38,9 +38,10 @@ export class RequestHistoryService {
     public async saveRequestHistory(
         user: User,
         ip: string,
+        request: string,
         status: RequestHistoryStatus,
     ) {
-        const requestHistory = new RequestHistory(user, ip, status);
+        const requestHistory = new RequestHistory(user, ip, request, status);
         await requestHistory.save();
 
         return requestHistory;

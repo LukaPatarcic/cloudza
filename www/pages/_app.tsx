@@ -2,7 +2,11 @@ import { useEffect } from 'react';
 
 import type { AppProps } from 'next/app';
 
-import { CacheProvider, EmotionCache } from '@emotion/react';
+import {
+    CacheProvider,
+    EmotionCache,
+    ThemeProvider as EmotionThemeProvider,
+} from '@emotion/react';
 import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
@@ -52,43 +56,45 @@ function MyApp({
                     refetchInterval={0}
                 >
                     <QueryClientProvider client={queryClient}>
-                        <ThemeProvider theme={theme}>
-                            <SnackbarProvider
-                                maxSnack={3}
-                                preventDuplicate
-                                anchorOrigin={{
-                                    horizontal: 'right',
-                                    vertical: 'bottom',
-                                }}
-                                iconVariant={{
-                                    success: (
-                                        <CheckCircleOutlineOutlinedIcon
-                                            sx={{ marginRight: 5 }}
-                                        />
-                                    ),
-                                    error: <ErrorOutlineOutlinedIcon />,
-                                    info: <InfoOutlinedIcon />,
-                                    warning: <WarningAmberOutlinedIcon />,
-                                }}
-                            >
-                                <CssBaseline />
-                                <title>{APP_NAME}</title>
-                                <NextNProgress
-                                    nonce={APP_NAME}
-                                    color={theme.palette.primary.main}
-                                    showOnShallow={false}
-                                    startPosition={0.4}
-                                    stopDelayMs={200}
-                                    height={3}
-                                    options={{
-                                        trickleRate: 0.05,
-                                        trickleSpeed: 500,
-                                        showSpinner: false,
+                        <EmotionThemeProvider theme={theme}>
+                            <ThemeProvider theme={theme}>
+                                <SnackbarProvider
+                                    maxSnack={3}
+                                    preventDuplicate
+                                    anchorOrigin={{
+                                        horizontal: 'right',
+                                        vertical: 'bottom',
                                     }}
-                                />
-                                <Component {...pageProps} />
-                            </SnackbarProvider>
-                        </ThemeProvider>
+                                    iconVariant={{
+                                        success: (
+                                            <CheckCircleOutlineOutlinedIcon
+                                                sx={{ marginRight: 5 }}
+                                            />
+                                        ),
+                                        error: <ErrorOutlineOutlinedIcon />,
+                                        info: <InfoOutlinedIcon />,
+                                        warning: <WarningAmberOutlinedIcon />,
+                                    }}
+                                >
+                                    <CssBaseline />
+                                    <title>{APP_NAME}</title>
+                                    <NextNProgress
+                                        nonce={APP_NAME}
+                                        color={theme.palette.primary.main}
+                                        showOnShallow={false}
+                                        startPosition={0.4}
+                                        stopDelayMs={200}
+                                        height={3}
+                                        options={{
+                                            trickleRate: 0.05,
+                                            trickleSpeed: 500,
+                                            showSpinner: false,
+                                        }}
+                                    />
+                                    <Component {...pageProps} />
+                                </SnackbarProvider>
+                            </ThemeProvider>
+                        </EmotionThemeProvider>
                     </QueryClientProvider>
                 </SessionProvider>
             </CacheProvider>

@@ -75,12 +75,6 @@ const SectionHeader: FC<Props> = ({
     ...rest
 }) => {
     const classes = useStyles();
-    let justifyGrid = 'center';
-    if (align === 'left') {
-        justifyGrid = 'flex-start';
-    } else if (align === 'right') {
-        justifyGrid = 'flex-end';
-    }
 
     return (
         <Grid

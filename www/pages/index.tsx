@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 
-import DefaultLayout from '@layout/DefaultLayout/DefaultLayout';
-import HomePage from '@template/HomePage/HomePage';
+import DefaultLayout from '@layout/DefaultLayout';
+import HomePage from '@template/HomePage';
 
 const Home: NextPage = () => {
     return (

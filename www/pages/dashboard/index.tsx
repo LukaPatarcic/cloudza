@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import DashboardLayout from '@layout/DashboardLayout/DashboardLayout';
-import DashboardPage from '@template/DashboardPage/DashboardPage';
+import DashboardLayout from '@layout/DashboardLayout';
+import DashboardPage from '@template/DashboardPage';
 
 const Dashboard = () => {
     return (

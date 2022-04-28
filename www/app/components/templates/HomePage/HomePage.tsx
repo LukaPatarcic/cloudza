@@ -2,7 +2,7 @@ import { colors, Divider } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
 import Section from '@element/Section/Section';
-import SectionAlternate from '@element/SectionAlternate/SectionAlternate';
+import SectionAlternate from '@element/Section/SectionAlternate';
 import Customization from '@module/HomeElements/Customization/Customization';
 import Hero from '@module/HomeElements/Hero/Hero';
 import Hub from '@module/HomeElements/Hub/Hub';

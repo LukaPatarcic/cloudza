@@ -19,6 +19,9 @@
       ],
       "@entity/*": [
         "core/entity/*"
+      ],
+      "@interceptor/*": [
+        "core/interceptor/*"
       ]
     },
     "module": "commonjs",

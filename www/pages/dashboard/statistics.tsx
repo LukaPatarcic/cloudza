@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 
 import { GetServerSideProps } from 'next';
 
-import { Paper, Tooltip } from '@mui/material';
+import { Tooltip } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -12,6 +12,7 @@ import TableRow from '@mui/material/TableRow';
 import { getSession, useSession } from 'next-auth/react';
 
 import { getRequestHistory } from '@api/requestHistory';
+import Paper from '@element/Paper';
 import timeAgo from '@helper/timeAgo';
 import DashboardLayout from '@layout/DashboardLayout/DashboardLayout';
 import { RequestHistory } from '@type/api/requestHistory';
@@ -31,13 +32,7 @@ const Statistics = () => {
 
     return (
         <DashboardLayout selectedItem="Statistics">
-            <Paper
-                sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                }}
-            >
+            <Paper>
                 <Table size="small">
                     <TableHead>
                         <TableRow>

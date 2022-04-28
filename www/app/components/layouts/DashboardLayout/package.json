@@ -1,0 +1,5 @@
+{
+    "name": "dashboard-layout",
+    "version": "1.0.0",
+    "main": "DashboardLayout.tsx"
+}

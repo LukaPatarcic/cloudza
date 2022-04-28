@@ -1,21 +1,15 @@
 import * as React from 'react';
 
 import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
 
+import Paper from '@element/Paper/Paper';
 import Orders from '@module/Dashboard/Orders';
 
 const DashboardPage = () => {
     return (
         <Grid container spacing={3}>
             <Grid item xs={12}>
-                <Paper
-                    sx={{
-                        p: 2,
-                        display: 'flex',
-                        flexDirection: 'column',
-                    }}
-                >
+                <Paper>
                     <Orders />
                 </Paper>
             </Grid>

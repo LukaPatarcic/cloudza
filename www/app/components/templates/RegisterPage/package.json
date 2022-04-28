@@ -1,0 +1,5 @@
+{
+    "name": "register-page",
+    "version": "1.0.0",
+    "main": "RegisterPage.tsx"
+}

@@ -13,11 +13,13 @@ export class WeatherService {
     ) {}
 
     public async getWeather(ip: string, user: User) {
+        const GET_WEATHER_API_ENDPOINT = '/weather';
         try {
             await this.paymentService.createUsageRecord(user);
             await this.requestHistoryService.saveRequestHistory(
                 user,
                 ip,
+                GET_WEATHER_API_ENDPOINT,
                 RequestHistoryStatus.SUCCESS,
             );
 
@@ -26,6 +28,7 @@ export class WeatherService {
             await this.requestHistoryService.saveRequestHistory(
                 user,
                 ip,
+                GET_WEATHER_API_ENDPOINT,
                 RequestHistoryStatus.ERROR,
             );
             throw new InternalServerErrorException();

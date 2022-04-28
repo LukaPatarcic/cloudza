@@ -79,10 +79,4 @@ export class PaymentController {
             }
         }
     }
-
-    @Get('/products')
-    @UseGuards(AuthGuard())
-    public async getProducts() {
-        return this.paymentService.getProducts();
-    }
 }
