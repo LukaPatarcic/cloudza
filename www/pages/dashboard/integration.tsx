@@ -22,7 +22,7 @@ import DashboardLayout from '@layout/DashboardLayout/DashboardLayout';
 interface IntegrationProps {
     hiddenToken: string | null;
 }
-
+//Show History list of all CRUD operations on API token
 const Integration: NextPage<IntegrationProps> = ({ hiddenToken }) => {
     const [token, setToken] = useState(hiddenToken ?? '');
     const { enqueueSnackbar } = useSnackbar();

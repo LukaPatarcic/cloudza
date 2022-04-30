@@ -9,6 +9,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import {
     DASHBOARD_CHECKOUT_ROUTE,
     DASHBOARD_INTEGRATION_ROUTE,
+    DASHBOARD_PAYMENTS_ROUTE,
     DASHBOARD_ROUTE,
     DASHBOARD_STATISTICS_ROUTE,
 } from '@constant/routes';
@@ -25,6 +26,11 @@ export const mainListItems: Item[] = [
         href: DASHBOARD_STATISTICS_ROUTE,
         icon: <BarChartIcon />,
         title: 'Statistics',
+    },
+    {
+        href: DASHBOARD_PAYMENTS_ROUTE,
+        icon: <AttachMoneyIcon />,
+        title: 'Payments',
     },
     {
         href: DASHBOARD_INTEGRATION_ROUTE,

@@ -63,7 +63,7 @@ export const data = {
         },
     ],
 };
-
+//TODO(Luka Patarcic) Show graph of usage, welcome screen, total uses this month, show when and if paid last invoice
 const DashboardPage = () => {
     return (
         <Grid container spacing={3}>
