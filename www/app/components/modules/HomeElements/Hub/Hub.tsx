@@ -4,9 +4,9 @@ import { Grid, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import clsx from 'clsx';
 
+import { APP_NAME } from '@constant/index';
 import Image from '@element/Image/Image';
 import SectionHeader from '@element/Section/SectionHeader';
-import CountUpNumber from '@module/HomeElements/CountUpNumber/CountUpNumber';
 
 interface Props {
     className?: string;
@@ -47,7 +47,7 @@ const Features: FC<Props> = ({ className, ...rest }) => {
                     data-aos="fade-up"
                 >
                     <Image
-                        src="/images/illustrations/dashboard-screenshot1.svg"
+                        src="/images/illustrations/home-2.svg"
                         alt="..."
                         className={classes.coverImage}
                         data-aos="flip-left"
@@ -69,7 +69,7 @@ const Features: FC<Props> = ({ className, ...rest }) => {
                             <SectionHeader
                                 title={
                                     <span>
-                                        Use flexible components.
+                                        Integrate with ease,
                                         <br />
                                         <Typography
                                             component="span"
@@ -80,41 +80,12 @@ const Features: FC<Props> = ({ className, ...rest }) => {
                                         </Typography>
                                     </span>
                                 }
-                                subtitle="theFront styles and extends Material-UI components, but also included brand new landing page focused components."
+                                subtitle={`${APP_NAME} uses the most modern technologies to ensure 24/7 uptime and, the best speed no matter where in the world you are located.`}
                                 align="left"
                                 fadeUp
                                 disableGutter
                                 titleVariant="h3"
                             />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <div className={classes.placementGrid}>
-                                <div>
-                                    <CountUpNumber
-                                        end={400}
-                                        label="Components"
-                                        textColor="primary"
-                                        suffix="+"
-                                    />
-                                </div>
-                                <div
-                                    className={classes.placementGridItemMiddle}
-                                >
-                                    <CountUpNumber
-                                        end={100}
-                                        label="Satisfaction"
-                                        textColor="primary"
-                                        suffix="%"
-                                    />
-                                </div>
-                                <div>
-                                    <CountUpNumber
-                                        end={5.0}
-                                        label="Review Score"
-                                        textColor="primary"
-                                    />
-                                </div>
-                            </div>
                         </Grid>
                     </Grid>
                 </Grid>
@@ -122,12 +93,5 @@ const Features: FC<Props> = ({ className, ...rest }) => {
         </div>
     );
 };
-
-// Features.propTypes = {
-//     /**
-//      * External classes
-//      */
-//     className: PropTypes.string,
-// };
 
 export default Features;

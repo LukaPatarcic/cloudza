@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 
-import { useMediaQuery, Grid, Button } from '@mui/material';
-import { makeStyles, useTheme } from '@mui/styles';
+import { Grid, Button } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import clsx from 'clsx';
 
 import Image from '@element/Image/Image';
@@ -27,33 +27,20 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Customization: FC<Props> = ({ className, ...rest }) => {
+const Future: FC<Props> = ({ className, ...rest }) => {
     const classes = useStyles();
-
-    const theme = useTheme();
-    const isMd = useMediaQuery(theme.breakpoints.up('md'), {
-        defaultMatches: true,
-    });
 
     return (
         <div className={clsx(classes.root, className)} {...rest}>
             <SectionHeader
-                label="Customization"
-                title="Customize your product"
-                subtitle="We aim to take care of you. Need help with installation, find a bug, or just need a clarifiction about our documentation? We'll be there to lend a helping hand."
+                label="The future"
+                title="We are expanding"
+                subtitle="Keep in touch with us as we are expanding our services and will include many new APIs in the future"
                 align="center"
                 ctaGroup={[
                     <Button
-                        key={0}
-                        variant="contained"
-                        color="primary"
-                        size="large"
-                    >
-                        Start now
-                    </Button>,
-                    <Button
                         key={1}
-                        variant="outlined"
+                        variant="contained"
                         color="primary"
                         size="large"
                     >
@@ -65,7 +52,7 @@ const Customization: FC<Props> = ({ className, ...rest }) => {
                 <Grid item xs={12} md={6}>
                     <Grid container justifyContent="center" alignItems="center">
                         <Image
-                            src="/images/illustrations/dashboard-screenshot2.svg"
+                            src="/images/illustrations/home-3.svg"
                             alt="TheFront Company"
                             className={classes.image}
                             data-aos="fade-up"
@@ -77,4 +64,4 @@ const Customization: FC<Props> = ({ className, ...rest }) => {
     );
 };
 
-export default Customization;
+export default Future;

@@ -1,39 +1,12 @@
 import Section from '@element/Section/Section';
 import SectionAlternate from '@element/Section/SectionAlternate';
-import Customization from '@module/HomeElements/Customization/Customization';
+import Future from '@module/HomeElements/Future/Future';
 import Hero from '@module/HomeElements/Hero/Hero';
 import Hub from '@module/HomeElements/Hub/Hub';
 import Partners from '@module/HomeElements/Partners/Partners';
 import Pricing from '@module/HomeElements/Pricing/Pricing';
 import { colors, Divider } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-
-const integrations = [
-    {
-        logo: '/images/logos/slack.svg',
-        name: 'Slack',
-    },
-    {
-        logo: '/images/logos/mailchimp.svg',
-        name: 'Mailchimp',
-    },
-    {
-        logo: '/images/logos/dropbox.svg',
-        name: 'Dropbox',
-    },
-    {
-        logo: '/images/logos/google-drive.svg',
-        name: 'Google Drive',
-    },
-    {
-        logo: '/images/logos/google-ad-manager.svg',
-        name: 'Google Ad Manager',
-    },
-    {
-        logo: '/images/logos/atlassian.svg',
-        name: 'Atlassian',
-    },
-];
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -67,12 +40,12 @@ const HomePage = () => {
                     <Hub />
                 </Section>
             </div>
-            <Section>
-                <Partners data={integrations} />
-            </Section>
             <SectionAlternate>
-                <Customization />
+                <Partners />
             </SectionAlternate>
+            <Section>
+                <Future />
+            </Section>
             <Divider />
             <SectionAlternate innerNarrowed>
                 <Pricing />

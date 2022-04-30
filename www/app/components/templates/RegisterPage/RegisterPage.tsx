@@ -28,7 +28,7 @@ const RegisterPage: FC<RegisterProps> = ({
                 >
                     <SectionHeader
                         title="Sign up"
-                        subtitle="Create beautiful marketing websites in hours instead of weeks."
+                        subtitle="Create an account to get access to all of our services"
                         titleProps={{
                             variant: 'h3',
                         }}

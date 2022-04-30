@@ -5,36 +5,7 @@ import clsx from 'clsx';
 
 import Copyright from '@module/Footer/Copyright/Copyright';
 import useStyles from '@module/Footer/Footer.classes';
-
-const footers = [
-    {
-        title: 'Company',
-        description: ['Team', 'History', 'Contact us', 'Locations'],
-    },
-    {
-        title: 'Features',
-        description: [
-            'Cool stuff',
-            'Random feature',
-            'Team feature',
-            'Developer stuff',
-            'Another one',
-        ],
-    },
-    {
-        title: 'Resources',
-        description: [
-            'Resource',
-            'Resource name',
-            'Another resource',
-            'Final resource',
-        ],
-    },
-    {
-        title: 'Legal',
-        description: ['Privacy policy', 'Terms of use'],
-    },
-];
+import { footerList } from '@module/Footer/footerList';
 
 const Footer: FC = () => {
     const classes = useStyles();
@@ -43,7 +14,7 @@ const Footer: FC = () => {
         <div className={classes.root}>
             <footer className={clsx(classes.footer, classes.layout)}>
                 <Grid container justifyContent="space-between">
-                    {footers.map((footer) => (
+                    {footerList.map((footer) => (
                         <Grid item key={footer.title}>
                             <Typography
                                 variant="h6"

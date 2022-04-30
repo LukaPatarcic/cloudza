@@ -1,5 +1,7 @@
 import { FC } from 'react';
 
+import Link from 'next/link';
+
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import { Typography, IconButton } from '@mui/material';
 import { makeStyles } from '@mui/styles';
@@ -67,13 +69,15 @@ const LearnMoreLink: FC<Props> = ({
     );
 
     return (
-        <a
-            href={href}
-            className={clsx('learn-more-link', classes.root, className)}
-            {...rest}
-        >
-            {children}
-        </a>
+        <Link href={href}>
+            <a
+                href={href}
+                className={clsx('learn-more-link', classes.root, className)}
+                {...rest}
+            >
+                {children}
+            </a>
+        </Link>
     );
 };
 

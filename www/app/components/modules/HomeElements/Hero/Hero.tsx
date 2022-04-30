@@ -1,9 +1,12 @@
 import React, { FC } from 'react';
 
+import Link from 'next/link';
+
 import { Button, Grid, Typography, useMediaQuery } from '@mui/material';
 import { makeStyles, useTheme } from '@mui/styles';
 import clsx from 'clsx';
 
+import { ABOUT_US_ROUTE, LOGIN_ROUTE } from '@constant/routes';
 import Image from '@element/Image/Image';
 import SectionHeader from '@element/Section/SectionHeader';
 
@@ -49,35 +52,38 @@ const Hero: FC<Props> = ({ className, ...rest }) => {
                     <SectionHeader
                         title={
                             <span>
-                                Beautiful data representation
+                                Get the most accurate weather information
                                 <br />
                                 <Typography
                                     component="span"
                                     variant="inherit"
                                     color="primary"
                                 >
-                                    built with theFront.
+                                    right here, right now.
                                 </Typography>
                             </span>
                         }
-                        subtitle="World developers use our theFront theme to build their internal tools and client admin applications. Save yourself time and money."
+                        subtitle="Easily integrate with our super simple SDK. Setup your account, get an API key and start searching for weather information all across the world!"
                         ctaGroup={[
-                            <Button
-                                key={0}
-                                variant="contained"
-                                color="primary"
-                                size="large"
-                            >
-                                Start now
-                            </Button>,
-                            <Button
-                                key={1}
-                                variant="outlined"
-                                color="primary"
-                                size="large"
-                            >
-                                Learn more
-                            </Button>,
+                            <Link key={0} href={LOGIN_ROUTE} passHref>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    size="large"
+                                >
+                                    Start now
+                                </Button>
+                            </Link>,
+                            <Link key={1} href={ABOUT_US_ROUTE} passHref>
+                                <Button
+                                    key={1}
+                                    variant="outlined"
+                                    color="primary"
+                                    size="large"
+                                >
+                                    Learn more
+                                </Button>
+                            </Link>,
                         ]}
                         align="left"
                         disableGutter
@@ -94,7 +100,7 @@ const Hero: FC<Props> = ({ className, ...rest }) => {
                     data-aos="fade-up"
                 >
                     <Image
-                        src="/images/illustrations/dashboard-screenshot.svg"
+                        src="/images/illustrations/home-1.svg"
                         alt="TheFront Company"
                         className={classes.image}
                         data-aos="flip-left"

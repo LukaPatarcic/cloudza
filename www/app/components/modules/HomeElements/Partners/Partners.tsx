@@ -8,11 +8,7 @@ import CardBase from '@element/CardBase/CardBase';
 import Image from '@element/Image/Image';
 import SectionHeader from '@element/Section/SectionHeader';
 import LearnMoreLink from '@module/HomeElements/LearnMoreLink/LearnMoreLink';
-
-interface Props {
-    className?: string;
-    data: { logo: string; name: string }[];
-}
+import { partnerList } from '@module/HomeElements/Partners/partnerList';
 
 const useStyles = makeStyles(() => ({
     root: {},
@@ -21,7 +17,7 @@ const useStyles = makeStyles(() => ({
     },
 }));
 
-const Partners: FC<Props> = ({ data, className, ...rest }) => {
+const Partners: FC = () => {
     const classes = useStyles();
 
     const theme = useTheme();
@@ -30,12 +26,12 @@ const Partners: FC<Props> = ({ data, className, ...rest }) => {
     });
 
     return (
-        <div className={clsx(classes.root, className)} {...rest}>
+        <div className={clsx(classes.root)}>
             <Grid container spacing={isMd ? 4 : 2}>
                 <Grid item xs={12} md={6} data-aos="fade-up">
                     <SectionHeader
                         title="We love to explore new ways to engage with brands and reach"
-                        subtitle="Our mission is to help you to grow your design skills, meet and connect with professional dsigners who share your passions."
+                        subtitle="Our mission is to help you to grow your business, reach the limits of what is possible."
                         align="left"
                         label="100+ Integrations"
                         ctaGroup={[
@@ -51,7 +47,7 @@ const Partners: FC<Props> = ({ data, className, ...rest }) => {
                 </Grid>
                 <Grid item xs={12} md={6} data-aos="fade-up">
                     <Grid container spacing={2}>
-                        {data.map((item, index) => (
+                        {partnerList.map((item, index) => (
                             <Grid item xs={4} key={index}>
                                 <CardBase withShadow liftUp>
                                     <Image
