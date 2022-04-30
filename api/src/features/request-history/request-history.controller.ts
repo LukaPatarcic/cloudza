@@ -1,8 +1,8 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
+import { GetUser } from '@decorator/get-user.decorator';
 import { User } from '@feature/auth/entity/user.entity';
-import { GetUser } from '@feature/auth/get-user.decorator';
 import { RequestHistory } from '@feature/request-history/request-history.entity';
 import { RequestHistoryService } from '@feature/request-history/request-history.service';
 
@@ -21,5 +21,10 @@ export class RequestHistoryController {
         @GetUser() user: User,
     ): Promise<Paginated<RequestHistory>> {
         return this.requestHistoryService.findAll(query, user);
+    }
+
+    @Get('/chart')
+    public async getChartData(@GetUser() user: User) {
+        return this.requestHistoryService.getChartData(user);
     }
 }

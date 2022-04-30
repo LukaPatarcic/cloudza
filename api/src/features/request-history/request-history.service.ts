@@ -35,6 +35,10 @@ export class RequestHistoryService {
         });
     }
 
+    public async getChartData(user: User) {
+        return this.requestHistoryRepository.findChartData(user);
+    }
+
     public async saveRequestHistory(
         user: User,
         ip: string,

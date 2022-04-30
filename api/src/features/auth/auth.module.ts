@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AuthController } from '@feature/auth/auth.controller';
 import { AuthService } from '@feature/auth/auth.service';
+import { HeaderApiKeyStrategy } from '@feature/auth/header-api-key.strategy';
 import { JwtStrategy } from '@feature/auth/jwt.strategy';
 import { AuthRepository } from '@feature/auth/repository/auth.repository';
 import { EmailVerificationRepository } from '@feature/auth/repository/email-verification.repository';
@@ -33,7 +34,7 @@ import { ForgottenPasswordRepository } from '@feature/auth/repository/forgotten-
         ConfigModule,
     ],
     controllers: [AuthController],
-    providers: [AuthService, JwtStrategy],
+    providers: [AuthService, JwtStrategy, HeaderApiKeyStrategy],
     exports: [JwtStrategy, PassportModule, AuthService],
 })
 export class AuthModule {}

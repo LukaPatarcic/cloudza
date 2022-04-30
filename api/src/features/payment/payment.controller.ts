@@ -11,8 +11,8 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
+import { GetUser } from '@decorator/get-user.decorator';
 import { User } from '@feature/auth/entity/user.entity';
-import { GetUser } from '@feature/auth/get-user.decorator';
 import { PaymentService } from '@feature/payment/payment.service';
 
 import Stripe from 'stripe';

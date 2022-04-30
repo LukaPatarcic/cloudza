@@ -1,8 +1,8 @@
 import { Controller, Delete, Get, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
+import { GetUser } from '@decorator/get-user.decorator';
 import { User } from '@feature/auth/entity/user.entity';
-import { GetUser } from '@feature/auth/get-user.decorator';
 import { TokenGuard } from '@feature/token/token.guard';
 import { TokenService } from '@feature/token/token.service';
 

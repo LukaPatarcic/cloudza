@@ -5,6 +5,7 @@ import { Exclude } from 'class-transformer';
 import {
     Column,
     Entity,
+    Index,
     JoinColumn,
     OneToOne,
     PrimaryGeneratedColumn,
@@ -24,6 +25,7 @@ export class Token extends TimestampEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Index('token-idx', { unique: true })
     @Column()
     @Exclude()
     token: string;

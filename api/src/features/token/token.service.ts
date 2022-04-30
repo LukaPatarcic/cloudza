@@ -6,7 +6,6 @@ import { AuthRepository } from '@feature/auth/repository/auth.repository';
 import { Token } from '@feature/token/token.entity';
 import { TokenRepository } from '@feature/token/token.repository';
 
-import * as bcrypt from 'bcrypt';
 import { createHash, randomBytes } from 'crypto';
 import { InjectStripe } from 'nestjs-stripe';
 import Stripe from 'stripe';
@@ -27,7 +26,7 @@ export class TokenService {
     }
 
     public async saveToken(user: User) {
-        //check if user has paid for feature
+        //TODO(Luka Patarcic) check if user has paid for feature
         const tokens = await this.generateToken();
         const tokenExists = await this.tokenRepository.findOne({
             where: { user },
@@ -35,43 +34,66 @@ export class TokenService {
 
         if (tokenExists) {
             await this.updateToken(
-                tokenExists.id,
-                tokens.encryptedAPIKey,
-                TokenService.hideToken(tokens.hashedAPIKey),
+                tokenExists,
+                tokens.hashedAPIKey,
+                TokenService.hideToken(tokens.apiKey),
+                user,
             );
-            return { token: tokens.hashedAPIKey };
+            return { token: tokens.apiKey };
         }
 
         const token = new Token(
             user,
-            tokens.encryptedAPIKey,
-            TokenService.hideToken(tokens.hashedAPIKey),
+            tokens.hashedAPIKey,
+            TokenService.hideToken(tokens.apiKey),
         );
-        await token.save();
+        user.token = token;
+        await Promise.all([token.save(), user.save()]);
 
-        return { token: tokens.hashedAPIKey };
+        return { token: tokens.apiKey };
     }
 
     public async deleteToken(user: User) {
+        user.token = null;
+        await user.save();
         return this.tokenRepository.delete({ user });
     }
 
-    private async updateToken(id: number, token: string, hiddenToken: string) {
-        return this.tokenRepository.update(id, { token, hiddenToken });
+    private async updateToken(
+        token: Token,
+        newToken: string,
+        hiddenToken: string,
+        user: User,
+    ) {
+        user.token = token;
+        await user.save();
+        return this.tokenRepository.update(token.id, {
+            token: newToken,
+            hiddenToken,
+        });
     }
 
-    public async checkIfTokenIsValid(user: User, token: string) {
-        const dbToken = await this.tokenRepository.findOne({ where: { user } });
-        if (!dbToken) return false;
-        return bcrypt.compare(token, dbToken.token);
+    public async checkIfTokenIsValid(token: string) {
+        const hashedToken = createHash('sha256').update(token).digest('hex');
+        const dbToken = await this.tokenRepository.findOne({
+            where: { token: hashedToken },
+        });
+        if (!dbToken) return null;
+
+        const isValid = dbToken.token === hashedToken;
+        if (isValid) {
+            return dbToken;
+        }
+
+        return null;
     }
 
-    private generateToken() {
+    private async generateToken() {
         const tokens = TokenService.hashToken();
 
         const tempCheckIfHasToken = false;
         if (tempCheckIfHasToken) {
-            this.generateToken();
+            await this.generateToken();
         } else {
             return tokens;
         }
@@ -85,8 +107,6 @@ export class TokenService {
         const apiKey = randomBytes(16).toString('hex');
         const hashedAPIKey = createHash('sha256').update(apiKey).digest('hex');
 
-        const encryptedAPIKey = await bcrypt.hash(hashedAPIKey, 0);
-
-        return { hashedAPIKey, encryptedAPIKey };
+        return { apiKey, hashedAPIKey };
     }
 }

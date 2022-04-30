@@ -8,6 +8,7 @@ import {
 import { SignInDto } from '@feature/auth/dto/sign-in.dto';
 import { SignUpDto } from '@feature/auth/dto/sign-up.dto';
 import { User } from '@feature/auth/entity/user.entity';
+import { Token } from '@feature/token/token.entity';
 
 import * as bcrypt from 'bcrypt';
 import { EntityRepository, Repository } from 'typeorm';
@@ -51,8 +52,19 @@ export class AuthRepository extends Repository<User> {
         return user;
     }
 
+    async findByToken(token: Token) {
+        const user = await this.findOne({ where: { token } });
+        if (!user)
+            throw new HttpException(
+                'LOGIN.USER_NOT_FOUND',
+                HttpStatus.NOT_FOUND,
+            );
+
+        return user;
+    }
+
     async findByCustomerId(customerId: string) {
-        const user = await this.findOne({ customerId });
+        const user = await this.findOne({ where: { customerId } });
         if (!user)
             throw new HttpException(
                 'LOGIN.USER_NOT_FOUND',
