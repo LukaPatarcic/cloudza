@@ -26,7 +26,6 @@ export class TokenService {
     }
 
     public async saveToken(user: User) {
-        //TODO(Luka Patarcic) check if user has paid for feature
         const tokens = await this.generateToken();
         const tokenExists = await this.tokenRepository.findOne({
             where: { user },
@@ -37,7 +36,6 @@ export class TokenService {
                 tokenExists,
                 tokens.hashedAPIKey,
                 TokenService.hideToken(tokens.apiKey),
-                user,
             );
             return { token: tokens.apiKey };
         }
@@ -48,7 +46,8 @@ export class TokenService {
             TokenService.hideToken(tokens.apiKey),
         );
         user.token = token;
-        await Promise.all([token.save(), user.save()]);
+        await token.save();
+        await user.save();
 
         return { token: tokens.apiKey };
     }
@@ -63,10 +62,7 @@ export class TokenService {
         token: Token,
         newToken: string,
         hiddenToken: string,
-        user: User,
     ) {
-        user.token = token;
-        await user.save();
         return this.tokenRepository.update(token.id, {
             token: newToken,
             hiddenToken,

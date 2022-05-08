@@ -8,3 +8,5 @@ export const DASHBOARD_CHECKOUT_ROUTE = '/dashboard/checkout';
 export const DASHBOARD_PAYMENTS_ROUTE = '/dashboard/payments';
 export const DASHBOARD_STATISTICS_ROUTE = '/dashboard/statistics';
 export const DASHBOARD_INTEGRATION_ROUTE = '/dashboard/integration';
+export const DASHBOARD_DOCS_WEATHER_ROUTE = '/dashboard/docs/weather';
+export const DASHBOARD_SETTINGS_ROUTE = '/dashboard/settings';

@@ -1,80 +1,119 @@
-import * as React from 'react';
 import { useEffect, useState } from 'react';
 
-import { GetServerSideProps } from 'next';
+import { GetServerSideProps, NextPage } from 'next';
 
-import { Tooltip } from '@mui/material';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
+import { getToken } from 'next-auth/jwt';
 import { getSession, useSession } from 'next-auth/react';
+import { useQuery, useQueryClient } from 'react-query';
 
 import { getRequestHistory } from '@api/requestHistory';
-import Paper from '@element/Paper';
-import timeAgo from '@helper/timeAgo';
 import DashboardLayout from '@layout/DashboardLayout/DashboardLayout';
+import StatisticsPage from '@template/StatisticsPage/StatisticsPage';
+import { Paginated } from '@type/api';
 import { RequestHistory } from '@type/api/requestHistory';
+import { Order } from '@type/index';
 
-const Statistics = () => {
-    const [rows, setRows] = useState<RequestHistory[]>([]);
+const PAGE = 0;
+const ROWS_PER_PAGE = 10;
+const ORDER_BY = 'id';
+const ORDER = 'asc';
+const QUERY_KEY = 'statistics';
+
+interface Props {
+    requestHistories: Paginated<RequestHistory>;
+}
+
+const Statistics: NextPage<Props> = ({ requestHistories }) => {
+    const queryClient = useQueryClient();
     const session = useSession();
+    const [order, setOrder] = useState<Order>(ORDER);
+    const [orderBy, setOrderBy] = useState<keyof RequestHistory>(ORDER_BY);
+    const [rowsPerPage, setRowsPerPage] = useState(ROWS_PER_PAGE);
+    const [page, setPage] = useState(PAGE);
+    const KEYS = [QUERY_KEY, page, rowsPerPage, orderBy, order];
+    const { status, data } = useQuery(
+        KEYS,
+        () =>
+            getRequestHistory(
+                page + 1,
+                rowsPerPage,
+                orderBy,
+                order,
+                session.data!.accessToken!
+            ),
+        {
+            keepPreviousData: true,
+            staleTime: 5000,
+            initialData: requestHistories,
+        }
+    );
+
+    const handleRequestSort = (
+        event: React.MouseEvent<unknown>,
+        property: keyof RequestHistory
+    ) => {
+        const isAsc = orderBy === property && order === 'asc';
+        setOrder(isAsc ? 'desc' : 'asc');
+        setOrderBy(property);
+    };
+
     useEffect(() => {
-        getRequestHistory(session.data!.accessToken!)
-            .then((data) => {
-                setRows(data.data);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    }, []);
+        if (data?.links.next) {
+            queryClient.prefetchQuery(KEYS, () =>
+                getRequestHistory(
+                    page + 1,
+                    rowsPerPage,
+                    orderBy,
+                    order,
+                    session.data!.accessToken!
+                )
+            );
+        }
+    }, [data, page, queryClient, order, orderBy, rowsPerPage]);
+
+    const handleChangePage = (event: unknown, newPage: number) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+    };
 
     return (
         <DashboardLayout selectedItem="Statistics">
-            <Paper>
-                <Table size="small">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>#</TableCell>
-                            <TableCell>Status</TableCell>
-                            <TableCell>IP Address</TableCell>
-                            <TableCell>Created At</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {rows.map((row, index) => (
-                            <TableRow key={row.id}>
-                                <TableCell>{index + 1}</TableCell>
-                                <TableCell>{row.status}</TableCell>
-                                <TableCell>{row.ip}</TableCell>
-                                <TableCell>
-                                    <Tooltip
-                                        placement="top"
-                                        title={new Date(
-                                            row.created_at
-                                        ).toDateString()}
-                                    >
-                                        <span>
-                                            {timeAgo(new Date(row.created_at))}
-                                        </span>
-                                    </Tooltip>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </Paper>
+            <StatisticsPage
+                status={status}
+                data={data}
+                order={order}
+                orderBy={orderBy}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                handleRequestSort={handleRequestSort}
+                handleChangePage={handleChangePage}
+                handleChangeRowsPerPage={handleChangeRowsPerPage}
+            />
         </DashboardLayout>
     );
 };
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const session = await getSession(ctx);
+    const token = await getToken(ctx);
+    const requestHistories = await getRequestHistory(
+        PAGE + 1,
+        ROWS_PER_PAGE,
+        ORDER_BY,
+        ORDER,
+        token!.accessToken!
+    );
 
     return {
         props: {
             session,
+            requestHistories,
         },
     };
 };

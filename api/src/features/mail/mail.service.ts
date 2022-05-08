@@ -18,6 +18,30 @@ export class MailService {
     apiUrl: string;
     wwwUrl: string;
 
+    sendSuccessInvoice(email: string, name: string, invoiceUrl: string) {
+        return this.sendEmail(
+            email,
+            'Invoice Paid Successfully',
+            'invoice-paid',
+            {
+                name,
+                invoiceUrl,
+            },
+        );
+    }
+
+    sendFailInvoice(email: string, name: string, invoiceUrl: string) {
+        return this.sendEmail(
+            email,
+            'Invoice Payment Failed',
+            'invoice-failed',
+            {
+                name,
+                invoiceUrl,
+            },
+        );
+    }
+
     sendVerificationEmail(
         email: string,
         name: string,

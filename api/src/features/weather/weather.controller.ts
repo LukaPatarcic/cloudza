@@ -1,4 +1,10 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import {
+    Controller,
+    Get,
+    UseGuards,
+    UsePipes,
+    ValidationPipe,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
 import { GetUser } from '@decorator/get-user.decorator';
@@ -13,6 +19,7 @@ export class WeatherController {
     constructor(private readonly weatherService: WeatherService) {}
 
     @Get()
+    @UsePipes(new ValidationPipe())
     public async getWeather(@GetUser() token: Token, @RealIP() ip: string) {
         return this.weatherService.getWeather(token, ip);
     }

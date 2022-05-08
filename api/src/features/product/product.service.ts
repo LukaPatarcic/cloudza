@@ -11,7 +11,6 @@ export class ProductService {
     public constructor(@InjectStripe() private readonly stripeClient: Stripe) {}
 
     public async getProducts() {
-        console.log('HERE');
         const data: Product[] = [];
         const products = await this.stripeClient.products.list();
         for (const product of products.data) {

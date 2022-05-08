@@ -4,13 +4,17 @@ import Document, { Html, Head, Main, NextScript } from 'next/document';
 
 import { ServerStyleSheets } from '@mui/styles';
 
+import { generateCsp } from '@helper/generateCsp';
 import theme from '@themes/theme';
 
 class MyDocument extends Document {
     render() {
+        const [csp, nonce] = generateCsp();
         return (
             <Html lang="en">
                 <Head>
+                    <meta property="csp-nonce" content={nonce} />
+                    <meta httpEquiv="Content-Security-Policy" content={csp} />
                     <link
                         rel="apple-touch-icon"
                         sizes="180x180"
@@ -52,7 +56,7 @@ class MyDocument extends Document {
                 </Head>
                 <body>
                     <Main />
-                    <NextScript />
+                    <NextScript nonce={nonce} />
                 </body>
             </Html>
         );

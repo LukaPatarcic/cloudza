@@ -1,15 +1,16 @@
-import { FC, FormEvent, useState } from 'react';
+import { ChangeEvent, FC, FormEvent, useState } from 'react';
 import * as React from 'react';
 
 import Link from 'next/link';
 
-import { Alert, Divider, Grid, TextField, Typography } from '@mui/material';
+import { Alert, Grid, TextField, Typography } from '@mui/material';
 import {
     CardNumberElement,
     useElements,
     useStripe,
 } from '@stripe/react-stripe-js';
 
+import { DASHBOARD_SETTINGS_ROUTE } from '@constant/routes';
 import Paper from '@element/Paper';
 import SubmitButton from '@element/SubmitButton';
 import StripeProducts from '@module/Stripe/StripeProducts';
@@ -27,7 +28,9 @@ const StripeCheckoutForm: FC<CheckoutProps> = ({
 }) => {
     const [name, setName] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [selectedPrice, setSelectedPrice] = useState('');
+    const [selectedPrice, setSelectedPrice] = useState(
+        products[products.length - 1].price.id
+    );
     const [message, setMessage] = useState<Message>({
         message: '',
         severity: 'success',
@@ -48,10 +51,16 @@ const StripeCheckoutForm: FC<CheckoutProps> = ({
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        if (!name) {
+            setState((state) => ({
+                ...state,
+                cardNameError: !name ? 'Please enter your name' : '',
+            }));
+        }
         if (
             !stripe ||
             !elements ||
-            !selectedPrice ||
+            !name ||
             cardNumberError ||
             expiredError ||
             cvcError ||
@@ -96,6 +105,16 @@ const StripeCheckoutForm: FC<CheckoutProps> = ({
         }
     };
 
+    const onNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setName(value);
+        setState((state) => ({
+            ...state,
+            cardNameComplete: !!value,
+            cardNameError: !value ? 'Please enter your name' : '',
+        }));
+    };
+
     const onElementChange =
         (field: string, errorField: string): any =>
         ({
@@ -132,7 +151,7 @@ const StripeCheckoutForm: FC<CheckoutProps> = ({
                                 }}
                                 fullWidth
                                 autoComplete="off"
-                                onChange={(e) => setName(e.target.value)}
+                                onChange={onNameChange}
                                 error={!!cardNameError}
                                 helperText={cardNameError}
                             />
@@ -181,7 +200,7 @@ const StripeCheckoutForm: FC<CheckoutProps> = ({
                                     and credit card. If you wish to change your
                                     card or plan you can do that here. If you
                                     wish to remove your card on unsubscibe go to{' '}
-                                    <Link href="/dashboard/settings">
+                                    <Link href={DASHBOARD_SETTINGS_ROUTE}>
                                         settings
                                     </Link>
                                 </Typography>

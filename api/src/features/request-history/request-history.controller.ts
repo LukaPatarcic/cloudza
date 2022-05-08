@@ -1,4 +1,10 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import {
+    Controller,
+    Get,
+    UseGuards,
+    UsePipes,
+    ValidationPipe,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
 import { GetUser } from '@decorator/get-user.decorator';
@@ -16,6 +22,7 @@ export class RequestHistoryController {
     ) {}
 
     @Get()
+    @UsePipes(new ValidationPipe())
     public async getRequestHistories(
         @Paginate() query: PaginateQuery,
         @GetUser() user: User,

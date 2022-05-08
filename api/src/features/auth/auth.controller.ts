@@ -7,6 +7,7 @@ import {
     Param,
     Post,
     Redirect,
+    UsePipes,
     ValidationPipe,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -31,14 +32,14 @@ export class AuthController {
     wwwUrl: string;
 
     @Post('/signup')
-    async signUp(@Body(ValidationPipe) signUpDto: SignUpDto) {
+    @UsePipes(new ValidationPipe())
+    async signUp(@Body() signUpDto: SignUpDto) {
         return this.authService.signUp(signUpDto);
     }
 
     @Post('/signin')
-    async signIn(
-        @Body(ValidationPipe) signInDto: SignInDto,
-    ): Promise<SigInResponse> {
+    @UsePipes(new ValidationPipe())
+    async signIn(@Body() signInDto: SignInDto): Promise<SigInResponse> {
         return this.authService.signIn(signInDto);
     }
 
@@ -92,6 +93,7 @@ export class AuthController {
     }
 
     @Post('/reset-password')
+    @UsePipes(new ValidationPipe())
     public async setNewPassword(@Body() resetPassword: ResetPasswordDto) {
         try {
             await this.authService.setNewPassword(resetPassword);

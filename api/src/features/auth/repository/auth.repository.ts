@@ -54,6 +54,7 @@ export class AuthRepository extends Repository<User> {
 
     async findByToken(token: Token) {
         const user = await this.findOne({ where: { token } });
+        console.log(token);
         if (!user)
             throw new HttpException(
                 'LOGIN.USER_NOT_FOUND',

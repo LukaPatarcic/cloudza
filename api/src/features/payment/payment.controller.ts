@@ -15,11 +15,11 @@ import { GetUser } from '@decorator/get-user.decorator';
 import { User } from '@feature/auth/entity/user.entity';
 import { PaymentService } from '@feature/payment/payment.service';
 
+import { Paginate, PaginateQuery } from 'nestjs-paginate';
 import Stripe from 'stripe';
 
 import { RequestWithRawBody } from '../../core/interface/request-with-body.interface';
 
-//TODO(Luka Patarcic) Add pipes to all methods and validations for post methods
 @Controller('payments')
 export class PaymentController {
     constructor(private readonly paymentService: PaymentService) {}
@@ -39,6 +39,19 @@ export class PaymentController {
     public async deletePaymentMethod(@GetUser() user: User) {
         try {
             return this.paymentService.deletePaymentMethod(user);
+        } catch (err) {
+            throw new InternalServerErrorException();
+        }
+    }
+
+    @Get('/history')
+    @UseGuards(AuthGuard())
+    public async getPaymentHistory(
+        @Paginate() query: PaginateQuery,
+        @GetUser() user: User,
+    ) {
+        try {
+            return this.paymentService.getPaymentHistory(query, user);
         } catch (err) {
             throw new InternalServerErrorException();
         }
@@ -69,12 +82,12 @@ export class PaymentController {
             }
             case 'invoice.paid': {
                 const data = event.data.object as Stripe.Invoice;
-                // handle in service
+                await this.paymentService.savePaymentHistory(data);
                 break;
             }
             case 'invoice.payment_failed': {
                 const data = event.data.object as Stripe.Invoice;
-                // handle in service
+                await this.paymentService.savePaymentHistory(data);
                 break;
             }
         }

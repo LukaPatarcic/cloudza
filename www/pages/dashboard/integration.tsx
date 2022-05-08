@@ -10,6 +10,7 @@ import {
     InputAdornment,
     TextField,
     Grid,
+    Typography,
 } from '@mui/material';
 import { getSession, useSession } from 'next-auth/react';
 import { useSnackbar } from 'notistack';
@@ -22,7 +23,7 @@ import DashboardLayout from '@layout/DashboardLayout/DashboardLayout';
 interface IntegrationProps {
     hiddenToken: string | null;
 }
-//Show History list of all CRUD operations on API token
+
 const Integration: NextPage<IntegrationProps> = ({ hiddenToken }) => {
     const [token, setToken] = useState(hiddenToken ?? '');
     const { enqueueSnackbar } = useSnackbar();
@@ -37,26 +38,64 @@ const Integration: NextPage<IntegrationProps> = ({ hiddenToken }) => {
         saveToken(session!.accessToken!)
             .then((data) => {
                 setToken(data.token);
+                enqueueSnackbar('Successfully copied to clipboard', {
+                    variant: 'success',
+                });
             })
             .catch((err) => {
-                console.log(err);
+                if (err.statusCode === 403) {
+                    enqueueSnackbar('You have to pay to access this resource', {
+                        variant: 'warning',
+                    });
+                    return;
+                }
+                enqueueSnackbar('Oops...Something went wrong', {
+                    variant: 'error',
+                });
             });
     };
 
     const onDelete = () => {
         deleteToken(session!.accessToken!)
-            .then((res) => {
-                console.log(res);
+            .then(() => {
+                enqueueSnackbar(
+                    'You have successfully deleted your API Token',
+                    {
+                        variant: 'success',
+                    }
+                );
                 setToken('');
             })
-            .catch((err) => {
-                console.log(err);
+            .catch(() => {
+                enqueueSnackbar('Oops...Something went wrong', {
+                    variant: 'error',
+                });
             });
     };
 
     return (
         <DashboardLayout selectedItem="Integrations">
             <Grid container spacing={3}>
+                <Grid item xs={12}>
+                    <Paper>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                                <Typography variant="h5">
+                                    API Token Generation Guide
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Typography>
+                                    You can generate your token here, when you
+                                    generate your token it will be visible only
+                                    once. Later on if you loose your token you
+                                    will have to generate a new one which will
+                                    make all previous ones obsolete.
+                                </Typography>
+                            </Grid>
+                        </Grid>
+                    </Paper>
+                </Grid>
                 <Grid item xs={12}>
                     <Paper>
                         <Grid container spacing={2}>
@@ -98,6 +137,7 @@ const Integration: NextPage<IntegrationProps> = ({ hiddenToken }) => {
                                     fullWidth
                                     variant="contained"
                                     onClick={onDelete}
+                                    disabled={!token}
                                 >
                                     Delete API token
                                 </Button>

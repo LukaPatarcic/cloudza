@@ -19,7 +19,6 @@ export class WeatherService {
     public async getWeather(token: Token, ip: string) {
         const GET_WEATHER_API_ENDPOINT = '/weather';
         const user = await this.authRepository.findByToken(token);
-        console.log(user);
         try {
             await this.paymentService.createUsageRecord(user);
             await this.requestHistoryService.saveRequestHistory(

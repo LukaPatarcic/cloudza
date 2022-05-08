@@ -6,12 +6,7 @@ import { RequestHistoryStatus } from '@feature/request-history/request-history-s
 import { RequestHistory } from '@feature/request-history/request-history.entity';
 import { RequestHistoryRepository } from '@feature/request-history/request-history.repository';
 
-import {
-    FilterOperator,
-    paginate,
-    Paginated,
-    PaginateQuery,
-} from 'nestjs-paginate';
+import { FilterOperator, paginate, PaginateQuery } from 'nestjs-paginate';
 
 @Injectable()
 export class RequestHistoryService {
@@ -20,10 +15,7 @@ export class RequestHistoryService {
         private readonly requestHistoryRepository: RequestHistoryRepository,
     ) {}
 
-    public findAll(
-        query: PaginateQuery,
-        user: User,
-    ): Promise<Paginated<RequestHistory>> {
+    public findAll(query: PaginateQuery, user: User) {
         return paginate(query, this.requestHistoryRepository, {
             sortableColumns: ['id', 'status', 'ip', 'created_at'],
             searchableColumns: ['status', 'ip', 'created_at'],

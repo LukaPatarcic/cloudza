@@ -8,6 +8,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 import {
     DASHBOARD_CHECKOUT_ROUTE,
+    DASHBOARD_DOCS_WEATHER_ROUTE,
     DASHBOARD_INTEGRATION_ROUTE,
     DASHBOARD_PAYMENTS_ROUTE,
     DASHBOARD_ROUTE,
@@ -44,5 +45,9 @@ export const secondaryListItems: Item[] = [
 ];
 
 export const docsListItems: Item[] = [
-    { href: '#', icon: <CodeIcon />, title: 'Weather' },
+    {
+        href: DASHBOARD_DOCS_WEATHER_ROUTE,
+        icon: <CodeIcon />,
+        title: 'Weather',
+    },
 ];

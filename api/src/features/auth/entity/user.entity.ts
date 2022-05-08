@@ -45,6 +45,9 @@ export class User extends TimestampEntity {
     @Exclude()
     salt: string;
 
+    @Column({ default: 0, type: 'int' })
+    amount: number;
+
     @Column({
         nullable: true,
         unique: true,
