@@ -1,6 +1,6 @@
 {
   "name": "cloudza-sdk",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "Monetization Weather API JavaScript SDK",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

@@ -22,16 +22,35 @@ The Cloudza SDK for JavaScript bundles TypeScript definition files for use in Ty
 In a TypeScript file:
 
 ```javascript
-// import entire SDK
-import AWS from 'aws-sdk';
+import cloudza from 'cloudza-sdk';
 ```
 
 In a JavaScript file:
 
 ```javascript
-// import entire SDK
-var AWS = require('aws-sdk');
+const cloudza = require('cloudza-sdk');
 ```
+
+Setup API Key before using other methods
+
+```javascript
+cloudza.setApiKey('your_api_key');
+```
+
+Call methods like ***getWeather***
+
+```javascript
+cloudza.getWeather();
+```
+
+(Optional) if you are doing development you can switch URLs to target different cloudza server
+```javascript
+cloudza.setUrl('http://localhost:5000')
+```
+
+Servers:
+* Dev - https://dev.cloudza.spolnici.com
+* Prod - https://cloudza.spolnici.com
 
 ## Authors
 

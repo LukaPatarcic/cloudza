@@ -5,12 +5,12 @@ interface CustomError extends Error {
 }
 
 export const fetchJson = (
+    baseUrl: string,
     url: string,
     options?: RequestInit,
     token = '',
 ): Promise<any> => {
     const headers = new Headers(options?.headers || {});
-    const apiUrl = "http://localhost:5000";
     headers.append('Accept', 'application/json');
     headers.append('Content-Type', 'application/json');
 
@@ -19,10 +19,7 @@ export const fetchJson = (
     }
 
     delete options?.headers;
-    if (!apiUrl) {
-        throw new Error('Missing .env config');
-    }
-    const API_URL = new URL(apiUrl + url);
+    const API_URL = new URL(baseUrl + url);
     return fetch(API_URL.href, {
         headers,
         ...options,
