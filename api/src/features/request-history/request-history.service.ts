@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { User } from '@feature/auth/entity/user.entity';
+import { RequestHistoryChartDto } from '@feature/request-history/request-history-chart.dto';
 import { RequestHistoryStatus } from '@feature/request-history/request-history-status.enum';
 import { RequestHistory } from '@feature/request-history/request-history.entity';
 import { RequestHistoryRepository } from '@feature/request-history/request-history.repository';
@@ -27,8 +28,8 @@ export class RequestHistoryService {
         });
     }
 
-    public async getChartData(user: User) {
-        return this.requestHistoryRepository.findChartData(user);
+    public async getChartData(params: RequestHistoryChartDto, user: User) {
+        return this.requestHistoryRepository.findChartData(params, user);
     }
 
     public async saveRequestHistory(

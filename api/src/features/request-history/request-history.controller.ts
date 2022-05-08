@@ -1,6 +1,7 @@
 import {
     Controller,
     Get,
+    Query,
     UseGuards,
     UsePipes,
     ValidationPipe,
@@ -9,6 +10,8 @@ import { AuthGuard } from '@nestjs/passport';
 
 import { GetUser } from '@decorator/get-user.decorator';
 import { User } from '@feature/auth/entity/user.entity';
+import { RequestHistoryChartGroupByValidationPipe } from '@feature/request-history/attack-strategy-validation.pipe';
+import { RequestHistoryChartDto } from '@feature/request-history/request-history-chart.dto';
 import { RequestHistory } from '@feature/request-history/request-history.entity';
 import { RequestHistoryService } from '@feature/request-history/request-history.service';
 
@@ -31,7 +34,15 @@ export class RequestHistoryController {
     }
 
     @Get('/chart')
-    public async getChartData(@GetUser() user: User) {
-        return this.requestHistoryService.getChartData(user);
+    @UsePipes(
+        new ValidationPipe({ transform: true, whitelist: true }),
+        RequestHistoryChartGroupByValidationPipe,
+    )
+    public async getChartData(
+        @Query() params: RequestHistoryChartDto,
+        @GetUser() user: User,
+    ) {
+        console.log(params);
+        return this.requestHistoryService.getChartData(params, user);
     }
 }

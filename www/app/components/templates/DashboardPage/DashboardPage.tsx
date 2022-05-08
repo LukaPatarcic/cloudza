@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 import Paper from '@element/Paper/Paper';
-import Orders from '@module/Dashboard/Orders';
 import { Grid } from '@mui/material';
 import {
     Chart as ChartJS,
@@ -13,6 +12,7 @@ import {
     PointElement,
     Legend,
 } from 'chart.js';
+import { Line } from 'react-chartjs-2';
 
 ChartJS.register(
     CategoryScale,
@@ -23,8 +23,6 @@ ChartJS.register(
     Tooltip,
     Legend
 );
-
-import { Line } from 'react-chartjs-2';
 
 export const options = {
     responsive: true,
