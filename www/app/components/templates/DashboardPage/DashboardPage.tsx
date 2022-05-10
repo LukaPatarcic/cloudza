@@ -1,7 +1,13 @@
 import * as React from 'react';
+import { FC } from 'react';
 
+import { APP_NAME } from '@constant/index';
 import Paper from '@element/Paper/Paper';
-import { Grid } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
+import {
+    DashboardProps,
+    RequestHistoryChart,
+} from '@type/components/DashboardProps';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -12,6 +18,7 @@ import {
     PointElement,
     Legend,
 } from 'chart.js';
+import { useSession } from 'next-auth/react';
 import { Line } from 'react-chartjs-2';
 
 ChartJS.register(
@@ -37,37 +44,35 @@ export const options = {
     },
 };
 
-const labels = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-];
-export const data = {
-    labels,
+export const chartData = (data: RequestHistoryChart[]) => ({
+    labels: data.map((item) => new Date(item.date).toLocaleDateString()),
     datasets: [
         {
-            data: [279, -510, 918, 386, -980, -523, 248],
+            data: data.map((item) => item.count),
             borderColor: 'rgb(255, 99, 132)',
             backgroundColor: 'rgba(255, 99, 132, 0.5)',
         },
     ],
-};
-//TODO(Luka Patarcic) Show graph of usage, welcome screen, total uses this month, show when and if paid last invoice
-const DashboardPage = () => {
+});
+
+const DashboardPage: FC<DashboardProps> = ({ data }) => {
+    const session = useSession();
+    console.log(session);
     return (
         <Grid container spacing={3}>
             <Grid item xs={12}>
                 <Paper>
-                    <Line options={options} data={data} />
+                    <Typography variant="h6">
+                        Welcome back to {APP_NAME},{' '}
+                        <Typography display="inline" variant="h6">
+                            {session.data?.user?.name}
+                        </Typography>
+                    </Typography>
+                </Paper>
+            </Grid>
+            <Grid item xs={12}>
+                <Paper>
+                    <Line options={options} data={chartData(data)} />
                 </Paper>
             </Grid>
         </Grid>

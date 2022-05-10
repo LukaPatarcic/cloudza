@@ -15,3 +15,11 @@ export const getRequestHistory = (
         token
     );
 };
+
+export const getRequestHistoryChart = (
+    token: string,
+    query: any = { groupBy: 'month' }
+) => {
+    const params = new URLSearchParams(query);
+    return fetchJson(`/request-history/chart?${params.toString()}`, {}, token);
+};

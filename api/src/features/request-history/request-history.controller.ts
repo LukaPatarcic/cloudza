@@ -42,7 +42,12 @@ export class RequestHistoryController {
         @Query() params: RequestHistoryChartDto,
         @GetUser() user: User,
     ) {
-        console.log(params);
         return this.requestHistoryService.getChartData(params, user);
+    }
+
+    @Get('/today')
+    public async getTodayData(@GetUser() user: User) {
+        const count = await this.requestHistoryService.getTodayData(user);
+        return { count };
     }
 }

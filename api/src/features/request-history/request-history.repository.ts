@@ -28,6 +28,11 @@ export class RequestHistoryRepository extends Repository<RequestHistory> {
             );
     }
 
+    public async findTodayData(user: User) {
+        const today = new Date();
+        return this.count({ where: { user, created_at: today } });
+    }
+
     private static groupByQuery(
         query: SelectQueryBuilder<RequestHistory>,
         groupBy: RequestHistoryChartGroupBy,
@@ -46,11 +51,7 @@ export class RequestHistoryRepository extends Repository<RequestHistory> {
 
     private baseFindChartData(params: RequestHistoryChartDto, user: User) {
         return this.createQueryBuilder()
-            .select([
-                'id',
-                'COUNT(*) as count',
-                `${params.groupBy.toUpperCase()}(created_at) as date`,
-            ])
+            .select(['id', 'COUNT(*) as count', `created_at as date`])
             .where('userId = :userId', { userId: user.id })
             .orderBy('created_at', 'ASC');
     }

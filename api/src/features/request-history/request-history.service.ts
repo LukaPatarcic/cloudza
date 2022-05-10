@@ -32,6 +32,10 @@ export class RequestHistoryService {
         return this.requestHistoryRepository.findChartData(params, user);
     }
 
+    public async getTodayData(user: User) {
+        return this.requestHistoryRepository.findTodayData(user);
+    }
+
     public async saveRequestHistory(
         user: User,
         ip: string,
