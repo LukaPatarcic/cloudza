@@ -1,7 +1,6 @@
 import {
     Controller,
     Get,
-    Query,
     UseGuards,
     UsePipes,
     ValidationPipe,
@@ -10,8 +9,6 @@ import { AuthGuard } from '@nestjs/passport';
 
 import { GetUser } from '@decorator/get-user.decorator';
 import { User } from '@feature/auth/entity/user.entity';
-import { RequestHistoryChartGroupByValidationPipe } from '@feature/request-history/attack-strategy-validation.pipe';
-import { RequestHistoryChartDto } from '@feature/request-history/request-history-chart.dto';
 import { RequestHistory } from '@feature/request-history/request-history.entity';
 import { RequestHistoryService } from '@feature/request-history/request-history.service';
 
@@ -33,21 +30,14 @@ export class RequestHistoryController {
         return this.requestHistoryService.findAll(query, user);
     }
 
-    @Get('/chart')
-    @UsePipes(
-        new ValidationPipe({ transform: true, whitelist: true }),
-        RequestHistoryChartGroupByValidationPipe,
-    )
-    public async getChartData(
-        @Query() params: RequestHistoryChartDto,
-        @GetUser() user: User,
-    ) {
-        return this.requestHistoryService.getChartData(params, user);
+    @Get('/month')
+    public async getMonthData(@GetUser() user: User) {
+        return this.requestHistoryService.getMonthData(user);
     }
 
-    @Get('/today')
-    public async getTodayData(@GetUser() user: User) {
-        const count = await this.requestHistoryService.getTodayData(user);
+    @Get('/month/count')
+    public async getMonthDataCount(@GetUser() user: User) {
+        const count = await this.requestHistoryService.getMonthDataCount(user);
         return { count };
     }
 }

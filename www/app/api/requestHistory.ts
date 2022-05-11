@@ -16,10 +16,10 @@ export const getRequestHistory = (
     );
 };
 
-export const getRequestHistoryChart = (
-    token: string,
-    query: any = { groupBy: 'month' }
-) => {
-    const params = new URLSearchParams(query);
-    return fetchJson(`/request-history/chart?${params.toString()}`, {}, token);
+export const getRequestHistoryMothData = (token: string) => {
+    return fetchJson(`/request-history/month`, {}, token);
+};
+
+export const getRequestHistoryMothCount = (token: string) => {
+    return fetchJson(`/request-history/month/count`, {}, token);
 };

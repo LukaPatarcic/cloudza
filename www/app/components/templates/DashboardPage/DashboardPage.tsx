@@ -20,6 +20,7 @@ import {
 } from 'chart.js';
 import { useSession } from 'next-auth/react';
 import { Line } from 'react-chartjs-2';
+import NumberFormat from 'react-number-format';
 
 ChartJS.register(
     CategoryScale,
@@ -55,7 +56,7 @@ export const chartData = (data: RequestHistoryChart[]) => ({
     ],
 });
 
-const DashboardPage: FC<DashboardProps> = ({ data }) => {
+const DashboardPage: FC<DashboardProps> = ({ data, count }) => {
     const session = useSession();
     console.log(session);
     return (
@@ -70,9 +71,25 @@ const DashboardPage: FC<DashboardProps> = ({ data }) => {
                     </Typography>
                 </Paper>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} md={8}>
                 <Paper>
                     <Line options={options} data={chartData(data)} />
+                </Paper>
+            </Grid>
+            <Grid item xs={12} md={4}>
+                <Paper>
+                    <Typography>
+                        Your total requests this month are:{' '}
+                        <Typography
+                            display="inline"
+                            sx={{ fontWeight: 'bold' }}
+                        >
+                            <NumberFormat
+                                displayType="text"
+                                value={count.count}
+                            />
+                        </Typography>
+                    </Typography>
                 </Paper>
             </Grid>
         </Grid>

@@ -1,7 +1,11 @@
 import {
+    CacheInterceptor,
+    CacheKey,
+    CacheTTL,
     Controller,
     Get,
     UseGuards,
+    UseInterceptors,
     UsePipes,
     ValidationPipe,
 } from '@nestjs/common';
@@ -19,6 +23,9 @@ export class WeatherController {
     constructor(private readonly weatherService: WeatherService) {}
 
     @Get()
+    @UseInterceptors(CacheInterceptor)
+    @CacheKey('weather')
+    @CacheTTL(360)
     @UsePipes(new ValidationPipe())
     public async getWeather(@GetUser() token: Token, @RealIP() ip: string) {
         return this.weatherService.getWeather(token, ip);

@@ -19,7 +19,7 @@ export class ProductController {
     @Get()
     @UseInterceptors(CacheInterceptor)
     @CacheKey('products')
-    @CacheTTL(360)
+    @CacheTTL(3600)
     public async getProducts() {
         return this.productService.getProducts();
     }
