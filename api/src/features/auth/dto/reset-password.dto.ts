@@ -7,10 +7,10 @@ export class ResetPasswordDto {
     readonly email: string;
 
     @IsString()
-    readonly newPasswordToken: string;
+    readonly newPasswordToken: string = '';
 
     @IsString()
-    readonly currentPassword: string;
+    readonly currentPassword: string = '';
 
     @IsString()
     @MinLength(8)
@@ -21,5 +21,5 @@ export class ResetPasswordDto {
 
     @IsString()
     @IsEqualTo('newPassword', { message: 'Passwords do not match' })
-    passwordConfirm: string;
+    passwordConfirm = '';
 }

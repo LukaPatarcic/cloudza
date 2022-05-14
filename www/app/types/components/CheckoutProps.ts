@@ -1,4 +1,4 @@
-import { IProduct } from '@type/api/payment';
+import { IProduct } from '@type/api/product';
 
 export interface CheckoutProps {
     clientSecret: string;

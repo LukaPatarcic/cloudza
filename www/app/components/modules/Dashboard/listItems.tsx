@@ -12,6 +12,7 @@ import {
     DASHBOARD_INTEGRATION_ROUTE,
     DASHBOARD_PAYMENTS_ROUTE,
     DASHBOARD_ROUTE,
+    DASHBOARD_SETTINGS_ROUTE,
     DASHBOARD_STATISTICS_ROUTE,
 } from '@constant/routes';
 import { Item } from '@type/components/ListItemProps';
@@ -41,7 +42,11 @@ export const mainListItems: Item[] = [
 ];
 
 export const secondaryListItems: Item[] = [
-    { href: '#', icon: <SettingsIcon />, title: 'Settings' },
+    {
+        href: DASHBOARD_SETTINGS_ROUTE,
+        icon: <SettingsIcon />,
+        title: 'Settings',
+    },
 ];
 
 export const docsListItems: Item[] = [

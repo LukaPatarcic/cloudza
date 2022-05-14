@@ -10,7 +10,7 @@ import { useMutation } from 'react-query';
 
 import { resetPassword } from '@api/auth';
 import DefaultLayout from '@layout/DefaultLayout';
-import ResetPasswordPage from '@template/ResetPasswordPage';
+import ResetPasswordPage from '@template/PasswordPage/ResetPasswordPage';
 import { IResetPassword, IServerError } from '@type/api';
 import { IResetPasswordFormInputs } from '@type/validations/auth';
 import { resetPasswordSchema } from '@validation/resetPasswordSchema';

@@ -6,3 +6,8 @@ export interface IResetPasswordFormInputs {
     password: string;
     passwordConfirm: string;
 }
+export interface IChangePasswordFormInputs {
+    currentPassword: string;
+    password: string;
+    passwordConfirm: string;
+}

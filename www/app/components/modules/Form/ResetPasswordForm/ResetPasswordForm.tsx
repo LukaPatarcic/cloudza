@@ -11,6 +11,7 @@ import SubmitButton from '@element/SubmitButton/SubmitButton';
 import { ResetPasswordProps } from '@type/components/ResetPasswordProps';
 
 const ResetPasswordForm: FC<ResetPasswordProps> = ({
+    currentPassword,
     isLoading,
     isSuccess,
     isError,
@@ -28,6 +29,20 @@ const ResetPasswordForm: FC<ResetPasswordProps> = ({
             sx={{ mt: 3, width: '100%' }}
         >
             <Grid container spacing={2}>
+                {currentPassword && (
+                    <Grid item xs={12}>
+                        <TextField
+                            required
+                            fullWidth
+                            label="Current Password"
+                            type="password"
+                            id="currentPassword"
+                            helperText={errors.currentPassword?.message}
+                            error={!!errors.currentPassword}
+                            {...register('currentPassword')}
+                        />
+                    </Grid>
+                )}
                 <Grid item xs={12}>
                     <PasswordTextField
                         required

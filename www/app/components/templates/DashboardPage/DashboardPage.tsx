@@ -58,7 +58,6 @@ export const chartData = (data: RequestHistoryChart[]) => ({
 
 const DashboardPage: FC<DashboardProps> = ({ data, count }) => {
     const session = useSession();
-    console.log(session);
     return (
         <Grid container spacing={3}>
             <Grid item xs={12}>
