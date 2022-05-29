@@ -1,9 +1,14 @@
 import { IsEqualTo } from '@decorator/is-equal.decorator';
 
-import { IsEmail, IsString, Matches, MinLength } from 'class-validator';
+import {
+    IsEmail,
+    IsEmpty,
+    IsString,
+    Matches,
+    MinLength,
+} from 'class-validator';
 
 export class ResetPasswordDto {
-    @IsEmail()
     readonly email: string;
 
     @IsString()

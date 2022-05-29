@@ -35,6 +35,7 @@ const ResetPassword: NextPage = () => {
         mutation.mutate({
             newPasswordToken: token?.toString(),
             newPassword: data.password,
+            passwordConfirm: data.passwordConfirm,
         });
     };
 
